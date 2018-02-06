@@ -6,7 +6,8 @@ namespace bangazonCLI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
+            CustomerManager cManager = new CustomerManager();
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 
+
 namespace bangazonCLI
 {
     public class Product
