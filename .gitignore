@@ -10,3 +10,4 @@ test/obj
 *.sqlite3
 src/.vscode
 test/.vscode
+.vscode
