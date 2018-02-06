@@ -15,8 +15,15 @@ namespace bangazonCLI.Tests
         [Fact]
         public void AddNewCustomer()
         {
-            Assert.Equal(_joe.FirstName, "Joe");
-            Assert.Equal(_joe.LastName, "Smith");
+            //create new customer using commandline
+            Customer bob = new Customer();
+            Assert.Equal(bob.FirstName, "Bob");
+            Assert.Equal(bob.LastName, "Jones");
+            Assert.Equal(bob.Address, "200 Jackson Lane");
+            Assert.Equal(bob.City, "Nashville");
+            Assert.Equal(bob.State, "TN");
+            Assert.Equal(bob.PostalCode, "12345");
+            Assert.Equal(bob.Phone, "123-123-1234");
         }
 
         [Fact]
