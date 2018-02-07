@@ -47,7 +47,7 @@ namespace bangazonCLI.Test
                         handler.GetString(2),
                         handler.GetString(3)
                     );
-                    payment.SetId(int.Parse(handler.GetString(0)));
+                    payment.Id = int.Parse(handler.GetString(0));
 					paymentList.Add(payment);
                 }
             });
