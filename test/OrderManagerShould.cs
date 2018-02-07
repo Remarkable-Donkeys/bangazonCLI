@@ -7,7 +7,9 @@ namespace bangazonCLI.Tests
 {
     public class OrderManagerShould
     {
-        // Class Variables
+        /*******************/
+        /* Class Variables */
+        /*******************/
 		private Product _product;
         private Order _order;
 
@@ -15,14 +17,14 @@ namespace bangazonCLI.Tests
         private OrderManager _orderManager;
 		private int _activeCustomerId;
 
-        // Constructor
+        /***************/
+        /* Constructor */
+        /***************/
 		public OrderManagerShould()
 		{
 			_activeCustomerId = 1;
-			// building Product
 			_product = new Product(1, "Book", "A book", 25.55, 2);
 
-			// building the Order
 			_order = new Order();
 
             // order properties
@@ -30,19 +32,8 @@ namespace bangazonCLI.Tests
             _order.CustomerId = _activeCustomerId;
             _order.DateCreated = DateTime.Now;
             _order.PaymentTypeId = 1;
-            _order.DateOrdered = DateTime.Now;
-			
-            // AddProduct will add product to a list of type product in order object
-            _order.AddProduct(_product);
-
 
 			_orderManager = new OrderManager();
-
-            // order manager properties
-            // order products list
-
-            // I think I don't need the following here
-            // _orderManager.AddOrder();
 		}
 
         /***********************/
@@ -64,17 +55,47 @@ namespace bangazonCLI.Tests
         [Fact]
         public void ListProductsInOrder()
         {
-            _order.AddProduct(_product);
+            if(_order.GetProductList().Count < 1)
+            {
+                _order.AddProduct(_product);
+            }
 
             List<Product> orderProductList = _order.GetProductList();
             
             Assert.Contains(_product, orderProductList);
         }
 
+        // Remove all products from order
+        [Fact]
+        public void RemoveAllProductsFromOrder()
+        {
+            if(_order.GetProductList().Count < 1)
+            {
+                _order.AddProduct(_product);
+            }
+
+            List<Product> orderProductList = _order.GetProductList();
+            
+            Assert.Contains(_product, orderProductList);
+
+            _order.RemoveAllProducts();
+
+            Boolean isProductCountGreaterThanZero = _order.GetProductList().Count > 0;
+
+            Assert.Equal(false, isProductCountGreaterThanZero);
+        }
+
         // Is product in order, based on product id
         [Fact]
         public void IsProductInOrder()
         {
+            if(_order.GetProductList().Count > 0)
+            {
+                _order.RemoveAllProducts();
+            }
+
+            List<Product> orderProductList = _order.GetProductList();
+
             Boolean isProductInOrder = _order.IsProductInOrder(_product);
 
             Assert.Equal(false, isProductInOrder);
@@ -90,8 +111,11 @@ namespace bangazonCLI.Tests
         [Fact]
         public void GetSingleProductFromOrder()
         {
-            int productId = 1;
-            _order.AddProduct(_product);
+            if(_order.GetProductList().Count < 1)
+            {
+                _order.AddProduct(_product);
+            }
+            int productId = _product.Id;
 
             Product product = _order.GetProduct(productId);
 
@@ -119,7 +143,10 @@ namespace bangazonCLI.Tests
         [Fact]
         public void ListOrdersInOrderManager()
         {
-            _orderManager.AddOrder(_order);
+            if(_orderManager.GetOrderList().Count < 1)
+            {
+                _orderManager.AddOrder(_order);
+            }
 
             List<Order> orderList = _orderManager.GetOrderList();
 
@@ -127,28 +154,55 @@ namespace bangazonCLI.Tests
 
         }
 
+        // Removes all orders from order manager
+        [Fact]
+        public void RemoveAllOrdersFromOrderManager()
+        {
+            if(_orderManager.GetOrderList().Count > 0)
+            {
+                _orderManager.RemoveAllOrders();
+            }
+            
+            List<Order> orderList = _orderManager.GetOrderList();
+
+            Boolean orderInOrderManager = orderList.Contains(_order);
+
+            Assert.Equal(false, orderInOrderManager);
+        }
+
         // Is order in order manager, based on order id
         [Fact]
         public void IsOrderInOrderManager()
         {
+            if(_orderManager.GetOrderList().Count > 0)
+            {
+                _orderManager.RemoveAllOrders();
+            }
             Boolean isOrderInOrderManager = _orderManager.IsOrderInOrderManager(_order);
 
             Assert.Equal(false, isOrderInOrderManager);
 
             _orderManager.AddOrder(_order);
 
-            isOrderInOrderManager = _order.IsOrderInOrderManager(_order);
+            isOrderInOrderManager = _orderManager.IsOrderInOrderManager(_order);
 
             Assert.Equal(true, isOrderInOrderManager);
         }
 
         // get single order from order manager
+        [Fact]
         public void GetSingleOrderFromOrderManager()
         {
-            int orderId = 1;
-            _orderManager.AddOrder(_order);
+            int orderId = _order.Id;
 
-            Order order = _orderManager.GetOrder(orderId);
+            if(_orderManager.GetOrderList().Count > 0)
+            {
+                _orderManager.RemoveAllOrders();
+            }
+            
+            _orderManager.AddOrder(_order);
+            
+            Order order = _orderManager.GetSingleOrder(orderId);
 
             Assert.Equal(order, _order);
         }
