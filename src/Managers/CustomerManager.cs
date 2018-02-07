@@ -1,35 +1,46 @@
+using System;
 using System.Collections.Generic;
 
 namespace bangazonCLI
 {
     public class CustomerManager
     {
+        private static DatabaseInterface _db = new DatabaseInterface();
         private List<Customer> _customerList = new List<Customer>();
 
-        private int _activeCustomerId {get; set;}
+        public static int ActiveCustomerId { get; set; }
 
-        public void Add(Customer c){
-            //adds customer to the list of customers
-            _customerList.Add(c);
+        public void Add(string first, string last, string address, string city, string state, string postalCode, string phone, DateTime dateCreated, DateTime lastActive)
+        {
+            //adds customer to the database of customers
+            _db.Insert($@"
+                INSERT INTO `Customer`
+                (`Id`, `FirstName`, `LastName`, `DateCreated`, `LastActive`, `Address`, `City`, `State`, `PostalCode`, `Phone`)
+                VALUES
+                (null, '{first}', '{last}', '{dateCreated}', '{lastActive}', '{address}', '{city}', '{state}', '{postalCode}', '{phone}')
+            ");
         }
 
-        public List<Customer> GetAllCustomers(){
+        public List<Customer> GetAllCustomers()
+        {
             //returns the list of customers
             return _customerList;
         }
 
-        public void SetActive(int id){
+        public void SetActive(int id)
+        {
             //sets the customer as the active customer
-            this._activeCustomerId = id;
+            ActiveCustomerId = id;
         }
 
-        public int GetActive(){
+        public int GetActive()
+        {
             //returns the id of the active customer
             return _activeCustomerId;
         }
 
 
-        
-        
+
+
     }
 }
