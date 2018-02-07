@@ -31,7 +31,6 @@ namespace bangazonCLI.Tests
             _order.Id = 1;
             _order.CustomerId = _activeCustomerId;
             _order.DateCreated = DateTime.Now;
-            _order.PaymentTypeId = 1;
 
 			_orderManager = new OrderManager();
 		}
@@ -82,7 +81,7 @@ namespace bangazonCLI.Tests
 
             Boolean isProductCountGreaterThanZero = _order.GetProductList().Count > 0;
 
-            Assert.Equal(false, isProductCountGreaterThanZero);
+            Assert.False(isProductCountGreaterThanZero);
         }
 
         // Is product in order, based on product id
@@ -98,13 +97,13 @@ namespace bangazonCLI.Tests
 
             Boolean isProductInOrder = _order.IsProductInOrder(_product);
 
-            Assert.Equal(false, isProductInOrder);
+            Assert.False(isProductInOrder);
 
             _order.AddProduct(_product);
 
             isProductInOrder = _order.IsProductInOrder(_product);
 
-            Assert.Equal(true, isProductInOrder);
+            Assert.True(isProductInOrder);
         }
 
         // Get single product from order
@@ -136,7 +135,30 @@ namespace bangazonCLI.Tests
 
             Boolean isOrderInOrderManager = orderList.Contains(_order);
 
-            Assert.Equal(true, isOrderInOrderManager);
+            Assert.True(isOrderInOrderManager);
+        }
+
+        // Remove order from order manager
+        [Fact]
+        public void RemoveOrderFromOrderManager()
+        {
+            int orderId = _order.Id;
+            if(_orderManager.GetOrderList().Count > 0)
+            {
+                _orderManager.RemoveAllOrders();
+            }
+
+            _orderManager.AddOrder(_order);
+
+            Boolean orderInOrderManager = _orderManager.GetOrderList().Contains(_order);
+
+            Assert.True(orderInOrderManager);
+
+            _orderManager.RemoveOrder(orderId);
+
+            orderInOrderManager = _orderManager.GetOrderList().Contains(_order);
+
+            Assert.False(orderInOrderManager);
         }
 
         // Return list of all orders tracked by order manager
@@ -167,7 +189,7 @@ namespace bangazonCLI.Tests
 
             Boolean orderInOrderManager = orderList.Contains(_order);
 
-            Assert.Equal(false, orderInOrderManager);
+            Assert.False(orderInOrderManager);
         }
 
         // Is order in order manager, based on order id
@@ -180,13 +202,13 @@ namespace bangazonCLI.Tests
             }
             Boolean isOrderInOrderManager = _orderManager.IsOrderInOrderManager(_order);
 
-            Assert.Equal(false, isOrderInOrderManager);
+            Assert.False(isOrderInOrderManager);
 
             _orderManager.AddOrder(_order);
 
             isOrderInOrderManager = _orderManager.IsOrderInOrderManager(_order);
 
-            Assert.Equal(true, isOrderInOrderManager);
+            Assert.True(isOrderInOrderManager);
         }
 
         // get single order from order manager
@@ -207,6 +229,27 @@ namespace bangazonCLI.Tests
             Assert.Equal(order, _order);
         }
 
-        
+        [Fact]
+        public void CompleteOrder()
+        {
+            int _paymentId = 1;
+            int orderId = _order.Id;
+
+            if(_orderManager.GetOrderList().Count > 0)
+            {
+                _orderManager.RemoveAllOrders();
+            }
+            
+            _orderManager.AddOrder(_order);
+
+            // to complete order a paymentId should be passed
+            _orderManager.CompleteOrder(orderId, _paymentId);
+
+            Order order = _orderManager.GetSingleOrder(orderId);
+
+            Boolean validOrderDate = order.DateOrdered > order.DateCreated;
+            
+            Assert.True(validOrderDate);
+        }
     }
 }
