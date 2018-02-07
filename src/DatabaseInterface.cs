@@ -246,5 +246,17 @@ namespace bangazonCLI
                 _connection.Close();
             }
         }
+        public void NukeDB() {
+            using(_connection){
+                 _connection.Open();
+                SqliteCommand dbcmd = _connection.CreateCommand();
+                dbcmd.CommandText = "DELETE FROM OrderedProduct; DELETE FROM `Order`; DELETE FROM Product; DELETE FROM PaymentType; DELETE FROM Customer; DROP TABLE OrderedProduct; DROP TABLE `Order`; DROP TABLE Product; DROP TABLE PaymentType; DROP TABLE Customer;";
+                dbcmd.ExecuteNonQuery();
+                dbcmd.Dispose();
+
+            }
+
+
+        }
     }
 }
