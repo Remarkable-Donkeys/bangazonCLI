@@ -233,7 +233,7 @@ namespace bangazonCLI
                     {
                         dbcmd.CommandText = $@"CREATE TABLE `PaymentType` (
                             `Id` integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-                            `Name` string NOT NULL,
+                            `Type` string NOT NULL,
                             `AccountNumber` string NOT NULL,
                             `CustomerId` int NOT NULL,
                             FOREIGN KEY(`CustomerId`) REFERENCES `Customer`(`Id`) 
