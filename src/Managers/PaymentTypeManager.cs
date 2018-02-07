@@ -29,7 +29,7 @@ namespace bangazonCLI
                         handler.GetString(2),
                         handler.GetString(3)
                     );
-                    payment.SetId(int.Parse(handler.GetString(0)));
+                    payment.Id = int.Parse(handler.GetString(0));
                     _paymentList.Add(payment);
                 }
             });

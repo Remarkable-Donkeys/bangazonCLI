@@ -17,10 +17,5 @@ namespace bangazonCLI
             this.Type = type;
             this.AccountNumber = number;
         }
-
-        public void SetId(int id)
-        {
-            Id = id;
-        }
     }
 }

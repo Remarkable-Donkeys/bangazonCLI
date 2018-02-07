@@ -28,15 +28,15 @@ namespace bangazonCLI.Test
             INSERT INTO Customer
             (Id, FirstName, LastName, DateCreated)
             VALUES
-            (null, 'Sean', 'Williams', '2018-01-01')
+            (null, 'Sean', 'Williams', 2018-01-01)
             ");
 			List<PaymentType> paymentList = new List<PaymentType>();
 			_manager.AddPaymentType(_payment);
 			db.Query($@"
                 SELECT P.Id, P.CustomerId, P.Type, P.AccountNumber FROM PaymentType P
-				Where P.CustomerId = {_payment.CustomerId},
-				where P.Type = '{_payment.Type}',
-				where P.Number = '{_payment.AccountNumber}'
+				Where P.CustomerId = {_payment.CustomerId}
+				and P.Type = '{_payment.Type}'
+				and P.AccountNumber = '{_payment.AccountNumber}'
                
             ", (SqliteDataReader handler) =>
             {
