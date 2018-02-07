@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
+using Microsoft.Data.Sqlite;
+
 
 namespace bangazonCLI.Tests
 {
@@ -15,35 +17,40 @@ namespace bangazonCLI.Tests
         [Fact]
         public void AddNewCustomer()
         {
+            DatabaseInterface db = new DatabaseInterface();
             //create new customer using commandline
-            Customer bob = new Customer();
-            Assert.Equal(bob.FirstName, "Bob");
-            Assert.Equal(bob.LastName, "Jones");
-            Assert.Equal(bob.Address, "200 Jackson Lane");
-            Assert.Equal(bob.City, "Nashville");
-            Assert.Equal(bob.State, "TN");
-            Assert.Equal(bob.PostalCode, "12345");
-            Assert.Equal(bob.Phone, "123-123-1234");
-        }
-
-        [Fact]
-        public void ListCustomers()
-        {
-            //adds customer to the list of customers
-            _manager.Add(_joe);
+            // _manager.Add(_joe);
             List<Customer> customerList = _manager.GetAllCustomers();
 
-            Assert.Contains(_joe, customerList);
+            bool bobExists = false;
+            foreach(Customer c in customerList){
+                if(c.FirstName == "Bob" && c.LastName == "Jones" && c.Address == "200 Jackson Lane"){
+                    bobExists = true;
+                }
+            }
+            Assert.True(bobExists);
 
         }
 
-        public void ActiveCustomer()
-        {
-            //passes in the Customer's Id to make that customer the active customer
-            _manager.SetActive(_joe.Id);
+        // [Fact]
+        // public void ListCustomers()
+        // {
+        //     //adds customer to the list of customers
+        //     _manager.Add(_joe);
+        //     List<Customer> customerList = _manager.GetAllCustomers();
 
-            Assert.Equal(_manager.GetActive(), 1);
+        //     Assert.Contains(_joe, customerList);
 
-        }
+        // }
+
+        // public void ActiveCustomer()
+        // {
+        //     //passes in the Customer's Id to make that customer the active customer
+        //     _manager.SetActive(_joe.Id);
+
+        //     Assert.Equal(_manager.GetActive(), 1);
+
+        // }
+
     }
 }

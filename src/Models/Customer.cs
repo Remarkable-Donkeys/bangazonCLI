@@ -17,15 +17,13 @@ namespace bangazonCLI
 
     
         public Customer(string first, string last){
-            this.Id = 1;
             this.FirstName = first;
             this.LastName = last;
         }
-
-        public Customer()
-        {
+        public Customer(){
 
         }
+
 
 
     }
