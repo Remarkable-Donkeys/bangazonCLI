@@ -8,14 +8,19 @@ namespace bangazonCLI
 
         public string Type;
 
-        public string Number;
+        public string AccountNumber;
 
 
-        public PaymentType(int id, string type, string number) 
+        public PaymentType(int customer, string type, string number) 
         {
-            this.CustomerId = id;
+            this.CustomerId = customer;
             this.Type = type;
-            this.Number = number;
+            this.AccountNumber = number;
+        }
+
+        public void SetId(int id)
+        {
+            Id = id;
         }
     }
 }

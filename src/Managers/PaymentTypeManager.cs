@@ -1,14 +1,48 @@
+/*author: Sean Williams
+purpose: Handle database interactions pertaining to Payment Types
+methods: 
+ */
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Data.Sqlite;
 
 namespace bangazonCLI
 {
     public class PaymentTypeManager
     {
-        private List<PaymentType> _paymentList = new List<PaymentType>();
+        //Stores ALL payment types
+        private List<PaymentType> _paymentList;
+        private DatabaseInterface db;
+        public PaymentTypeManager()
+        {
+            _paymentList = new List<PaymentType>();
+            db = new DatabaseInterface();
+            db.Query($@"
+                SELECT P.Id, P.CustomerId, P.Type, P.AccountNumber FROM PaymentType P
+               
+            ", (SqliteDataReader handler) =>
+            {
+                while (handler.Read())
+                {
+                    PaymentType payment = new PaymentType(
+                        int.Parse(handler.GetString(1)),
+                        handler.GetString(2),
+                        handler.GetString(3)
+                    );
+                    payment.SetId(int.Parse(handler.GetString(0)));
+                    _paymentList.Add(payment);
+                }
+            });
+        }
         public void AddPaymentType(PaymentType payment)
         {
             _paymentList.Add(payment);
+		    db.Insert($@"
+            INSERT INTO PaymentType
+            (Id, CustomerId, Type, AccountNumber)
+            VALUES
+            (null, {payment.CustomerId}, '{payment.Type}', '{payment.AccountNumber}')
+            ");
         }
 
         public List<PaymentType> GetPaymentTypesList(int customer)
