@@ -40,7 +40,7 @@ namespace bangazonCLI.Tests
         public void ActiveCustomer()
         {
             //passes in the CustomerId to make that customer the active customer
-            _manager.SetActive(_joe.CustomerId);
+            _manager.SetActive(_joe.Id);
 
             Assert.Equal(_manager.GetActive(), 1);
 
