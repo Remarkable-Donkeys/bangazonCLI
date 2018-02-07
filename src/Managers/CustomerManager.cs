@@ -11,6 +11,7 @@ namespace bangazonCLI
 
         public static int ActiveCustomerId { get; set; }
 
+
         public int Add(string first, string last, string address, string city, string state, string postalCode, string phone, DateTime dateCreated, DateTime lastActive)
         {
             //adds customer to the database of customers and returns the id of that customer
@@ -68,6 +69,8 @@ namespace bangazonCLI
         }
 
         public int GetActive(){
+            //returns the id of the active customer
+
             return ActiveCustomerId;
         }
 
