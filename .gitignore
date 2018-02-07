@@ -2,12 +2,8 @@ node_modules
 bower_components
 __pycache__
 *.pyc
-src/bin
-test/bin
-src/obj
-test/obj
+bin
+obj
 *.db
 *.sqlite3
-src/.vscode
-test/.vscode
 .vscode
