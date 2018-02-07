@@ -4,7 +4,7 @@ namespace bangazonCLI
 {
     public class Customer
     {
-        public int CustomerId {get; set;}
+        public int Id {get; set;}
         public string FirstName {get; set;}
         public string LastName {get; set;}
         public string Address {get; set;}
@@ -15,7 +15,7 @@ namespace bangazonCLI
 
 
         public Customer(string first, string last){
-            this.CustomerId = 1;
+            this.Id = 1;
             this.FirstName = first;
             this.LastName = last;
         }
