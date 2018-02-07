@@ -17,14 +17,26 @@ namespace bangazonCLI.Tests
         [Fact]
         public void AddNewCustomer()
         {
-            DatabaseInterface db = new DatabaseInterface();
-            //create new customer using commandline
-            // _manager.Add(_joe);
+            //create a new customer
+            Customer bob = new Customer(){
+                FirstName = "Bob",
+                LastName = "Jones",
+                Address = "200 Jackson Lane",
+                City= "Nashville",
+                State= "TN",
+                PostalCode= "12345",
+                Phone="123-123-1234",
+                DateCreated= DateTime.Now,
+                LastActive=DateTime.Now
+            };
+            _manager.Add(bob);
+            //gets list of all customers
             List<Customer> customerList = _manager.GetAllCustomers();
 
             bool bobExists = false;
+            //if bob is in the list then set bobExists to true
             foreach(Customer c in customerList){
-                if(c.FirstName == "Bob" && c.LastName == "Jones" && c.Address == "200 Jackson Lane"){
+                if(c.FirstName == "Bob" && c.LastName == "Jones" && c.Address == "200 Jackson Lane" && c.Phone=="123-123-1234"){
                     bobExists = true;
                 }
             }
@@ -43,14 +55,16 @@ namespace bangazonCLI.Tests
 
         // }
 
-        // public void ActiveCustomer()
-        // {
-        //     //passes in the Customer's Id to make that customer the active customer
-        //     _manager.SetActive(_joe.Id);
+        public void ActiveCustomer()
+        {
+            //passes in the Customer's Id to make that customer the active customer
+            _manager.SetActive(2);
 
-        //     Assert.Equal(_manager.GetActive(), 1);
 
-        // }
+            Assert.Equal(2, CustomerManager.ActiveCustomerId);
+
+        }
+
 
     }
 }

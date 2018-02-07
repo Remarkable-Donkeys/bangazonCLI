@@ -11,10 +11,10 @@ namespace bangazonCLI
 
         public static int ActiveCustomerId { get; set; }
 
-        public void Add(string first, string last, string address, string city, string state, string postalCode, string phone, DateTime dateCreated, DateTime lastActive)
+        public int Add(string first, string last, string address, string city, string state, string postalCode, string phone, DateTime dateCreated, DateTime lastActive)
         {
-            //adds customer to the database of customers
-            _db.Insert($@"
+            //adds customer to the database of customers and returns the id of that customer
+            return _db.Insert($@"
                 INSERT INTO `Customer`
                 (`Id`, `FirstName`, `LastName`, `DateCreated`, `LastActive`, `Address`, `City`, `State`, `PostalCode`, `Phone`)
                 VALUES
@@ -22,10 +22,10 @@ namespace bangazonCLI
             ");
         }
 
-        public void Add(Customer c)
+        public int Add(Customer c)
         {
-            //adds customer to the database of customers
-            _db.Insert($@"
+            //adds customer to the database of customers and returns the id of that customer
+            return _db.Insert($@"
                 INSERT INTO `Customer`
                 (`Id`, `FirstName`, `LastName`, `DateCreated`, `LastActive`, `Address`, `City`, `State`, `PostalCode`, `Phone`)
                 VALUES
@@ -67,13 +67,9 @@ namespace bangazonCLI
             ActiveCustomerId = id;
         }
 
-        public int GetActive()
-        {
-            //returns the id of the active customer
+        public int GetActive(){
             return ActiveCustomerId;
         }
-
-
 
 
     }

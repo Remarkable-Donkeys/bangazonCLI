@@ -32,7 +32,8 @@ namespace bangazonCLI
             DateTime dateCreated = DateTime.Now;
             DateTime lastActive = DateTime.Now;
 
-            manager.Add(firstName, lastName, address, city, state, postalCode, phoneNumber, dateCreated, lastActive);
+            int activeId = manager.Add(firstName, lastName, address, city, state, postalCode, phoneNumber, dateCreated, lastActive);
+            manager.SetActive(activeId);
 
         }
     }
