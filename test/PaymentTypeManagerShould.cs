@@ -1,4 +1,10 @@
-using System;
+/*author:   Sean Williams
+purpose:    Payment Types Unit Tests
+Tests:    	AddPaymentType
+			GetPaymentTypesList
+ */
+ 
+ using System;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 using Xunit;
@@ -16,7 +22,6 @@ namespace bangazonCLI.Test
 		public PaymentTypeManagerShould()
 		{
 			db = new DatabaseInterface();
-			db.CheckDatabase();
 			_payment = new PaymentType(1, "VISA", "1234567");
 			_manager = new PaymentTypeManager();
 
