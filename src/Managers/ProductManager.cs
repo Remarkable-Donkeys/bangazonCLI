@@ -74,5 +74,19 @@ namespace bangazonCLI
             return returnedProduct;
         }
 
+        public void Update(int productId, int customerId, Product updatedProduct)
+        {
+            string sql = $"UPDATE Product SET Name = '{updatedProduct.Name}', Description = '{updatedProduct.Description}', Price = '{updatedProduct.Price}', Quantity = '{updatedProduct.Quantity}' WHERE Id= {productId} AND CustomerId = {customerId}";
+
+            db.Update(sql);
+        }
+
+        public void Delete(int productId, int customerId)
+        {
+            string sql = $"DELETE FROM Product WHERE Id = {productId} AND CustomerId = {customerId}";
+
+            db.Update(sql);
+        }
+
     }
 }
