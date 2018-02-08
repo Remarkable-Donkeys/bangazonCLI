@@ -15,11 +15,7 @@ namespace bangazonCLI
         //method to ADD a product to the system
         public int Add(Product newProduct)
         {
-            db.Insert($@"
-            INSERT INTO Customer
-            (Id, FirstName, LastName, DateCreated)
-            VALUES
-            (null, 'Tyler', 'Bowman', 2018-01-01)");
+            
             
 
             string sql = $"insert into Product (Id, Name, Description, Price, Quantity, CustomerId, DateAdded) values (null, '{newProduct.Name}', '{newProduct.Description}', {newProduct.Price}, {newProduct.Quantity}, {newProduct.CustomerId}, '2018-01-01')";

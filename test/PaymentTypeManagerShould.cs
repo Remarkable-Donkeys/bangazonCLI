@@ -37,8 +37,6 @@ namespace bangazonCLI.Test
         {
 			db.NukeDB();
 			db.CheckDatabase();
-			Customer testCustomer = new Customer("Sean", "Williams");
-			CustomerManager customerManager = new CustomerManager();
 			customerManager.Add(testCustomer);
 			List<PaymentType> paymentList = new List<PaymentType>();
 			_manager.AddPaymentType(_payment);
