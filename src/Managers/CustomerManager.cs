@@ -1,3 +1,10 @@
+/*author:   Kristen Norris
+purpose:    Handle database interactions pertaining to Customers
+methods:    Add: adds a customer to the database
+            GetAllCustomers: returns a list of all the customers in the database
+            SetActive: sets a customer as the active customer
+ */
+
 using System;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;

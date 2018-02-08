@@ -1,3 +1,8 @@
+/*author:   Kristen Norris
+purpose:    Display the Customer Menu
+methods:    Show: shows the Customer Menu in the console (without functionality)
+            DisplayMenu: switch statment to give functionality to the Customer Menu
+ */
 using System;
 
 namespace bangazonCLI
@@ -12,8 +17,8 @@ namespace bangazonCLI
             Console.WriteLine("Active Customer Menu");
             Console.WriteLine("*************************************************");
             Console.WriteLine("1. Create a payment option");
-            Console.WriteLine("2. Selling");
-            Console.WriteLine("3. Purchasing");
+            Console.WriteLine("2. Selling Product Menu");
+            Console.WriteLine("3. Purchasing Product Menu");
             Console.WriteLine("4. Show revenue report");
             Console.WriteLine("5. Return to Main Menu!");
             Console.Write("> ");
@@ -41,8 +46,9 @@ namespace bangazonCLI
                     //Show Revenue Report
                     break;
                 case 5:
-                    //reset ActiveCustomerId & return to Main Menu
+                    //reset ActiveCustomerId 
                     CustomerManager.ActiveCustomerId = 0;
+                    //return to Main Menu
                     return;
             }
         }

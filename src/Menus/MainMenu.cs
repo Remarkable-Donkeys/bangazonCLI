@@ -1,4 +1,7 @@
-
+/*author:   Kristen Norris
+purpose:    Show Main Menu
+methods:    Show: show the main menu in the console
+ */
 using System;
 
 namespace bangazonCLI

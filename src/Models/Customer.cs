@@ -1,3 +1,7 @@
+/*author:   Kristen Norris
+purpose:    Create a new customer
+constructor: can be created with no properties, or with first and last name
+ */
 using System;
 
 namespace bangazonCLI
@@ -23,7 +27,6 @@ namespace bangazonCLI
         public Customer(){
 
         }
-
 
 
     }

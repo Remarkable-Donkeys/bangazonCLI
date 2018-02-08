@@ -22,7 +22,7 @@ namespace bangazonCLI
                 {
                     case 1:
                         //create a new customer
-                        CustomerInput newCustomer = new CustomerInput(cManager);
+                        CustomerInput.New(cManager);
                         
                         break;
                     case 2:
