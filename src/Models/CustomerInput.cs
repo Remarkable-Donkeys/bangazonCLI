@@ -1,11 +1,16 @@
+/*author:   Kristen Norris
+purpose:    Allows user to create a new customer
+method:    New: prompts user to enter information for the customer. Once the user has entered all the information, it adds the customer to the database, sets that customer as active and brings the user to the Customer Menu
+*/
 using System;
 
 namespace bangazonCLI
 {
     public class CustomerInput
     {
-        public CustomerInput(CustomerManager manager)
+        public static void New(CustomerManager manager)
         {
+            //user input to create a new customer
             Console.Clear();
             Console.WriteLine("Enter customer first name");
             Console.Write("> ");
@@ -32,9 +37,12 @@ namespace bangazonCLI
             DateTime dateCreated = DateTime.Now;
             DateTime lastActive = DateTime.Now;
 
+            //take user input to add a new customer to the database and return the id of the newly added customer
             int activeId = manager.Add(firstName, lastName, address, city, state, postalCode, phoneNumber, dateCreated, lastActive);
+            //set that customer as active
             manager.SetActive(activeId);
-
+            //bring user to the Customer Menu
+            CustomerMenu.DisplayMenu();
         }
     }
 }
