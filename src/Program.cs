@@ -21,14 +21,14 @@ namespace bangazonCLI
                 switch (choice1)
                 {
                     case 1:
-                        //new customer
+                        //create a new customer
                         CustomerInput newCustomer = new CustomerInput(cManager);
-                        CustomerMenu.DisplayMenu();
+                        
                         break;
                     case 2:
                         //choose active customer
-                        CustomerDisplay currentCustomer = new CustomerDisplay(cManager);
-                        CustomerMenu.DisplayMenu();
+                        CustomerActive.SelectCurrent(cManager, db);
+                        
                         break;
                     case 3:
                         //stale items

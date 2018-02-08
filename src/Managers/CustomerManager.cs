@@ -36,6 +36,9 @@ namespace bangazonCLI
 
         public List<Customer> GetAllCustomers()
         {
+            //clears customer list so that data isn't duplicated if method is called again
+            _customerList.Clear();
+            
             //selects customer information from the database and adds it to a List<Customer>
             _db.Query($@"SELECT `Id`, `FirstName`, `LastName`, `DateCreated`, `LastActive`, `Address`, `City`, `State`, `PostalCode`, `Phone` FROM Customer",
             (SqliteDataReader reader) =>

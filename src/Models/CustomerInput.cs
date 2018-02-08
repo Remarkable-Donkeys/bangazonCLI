@@ -6,6 +6,7 @@ namespace bangazonCLI
     {
         public CustomerInput(CustomerManager manager)
         {
+            //user input to create a new customer
             Console.Clear();
             Console.WriteLine("Enter customer first name");
             Console.Write("> ");
@@ -32,9 +33,12 @@ namespace bangazonCLI
             DateTime dateCreated = DateTime.Now;
             DateTime lastActive = DateTime.Now;
 
+            //take user input to add a new customer to the database and return the id of the newly added customer
             int activeId = manager.Add(firstName, lastName, address, city, state, postalCode, phoneNumber, dateCreated, lastActive);
+            //set that customer as active
             manager.SetActive(activeId);
-
+            //bring user to the Customer Menu
+            CustomerMenu.DisplayMenu();
         }
     }
 }

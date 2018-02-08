@@ -43,8 +43,7 @@ namespace bangazonCLI
                 case 5:
                     //reset ActiveCustomerId & return to Main Menu
                     CustomerManager.ActiveCustomerId = 0;
-                    MainMenu.Show();
-                    break;
+                    return;
             }
         }
 

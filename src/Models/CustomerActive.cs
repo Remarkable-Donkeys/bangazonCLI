@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace bangazonCLI
 {
-    public class CustomerDisplay
+    public class CustomerActive
     {
-        private DatabaseInterface _db = new DatabaseInterface();
-        public CustomerDisplay(CustomerManager manager)
+        public static void SelectCurrent(CustomerManager manager, DatabaseInterface db)
         {
+            //display a list of all customers in the database
             Console.Clear();
             Console.WriteLine("To return to main menu enter 0");
             Console.WriteLine("*************************************************");
@@ -18,25 +18,28 @@ namespace bangazonCLI
                 Console.WriteLine(" Id: " + c.Id + "    Name: " + c.FirstName + " " + c.LastName + "    Phone: " + c.Phone);
             }
             Console.WriteLine(">");
-            ConsoleKeyInfo enteredKey = Console.ReadKey();
-            Console.WriteLine("");
-            int activeId = int.Parse(enteredKey.KeyChar.ToString());
+
+            //parse the entered Id into an int
+            int activeId = int.Parse(Console.ReadLine().ToString());
 
             //if user selects 0 return to the main menu
-            if (activeId == 0)
-            {
-                MainMenu.Show();
-            }
-            else
+            if (activeId > 0)
             {
                 //user selects a customer to set as active
                 manager.SetActive(activeId);
 
                 //update the active customer LastActive Date with today's date
                 string activeDate = DateTime.Now.ToString();
-                _db.Update($@"UPDATE Customer
+                db.Update($@"UPDATE Customer
                     SET LastActive = '{activeDate}'
-                    WHERE Id = {activeId};");                
+                    WHERE Id = {activeId};");
+                
+                //bring user to the Customer Menu
+                CustomerMenu.DisplayMenu();
+            }
+            else
+            {
+                return;
             }
 
 
