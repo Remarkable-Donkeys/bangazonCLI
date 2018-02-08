@@ -1,6 +1,7 @@
-/*author: Sean Williams
-purpose: Handle database interactions pertaining to Payment Types
-methods: 
+/*author:   Sean Williams
+purpose:    Handle database interactions pertaining to Payment Types
+methods:    AddPaymentType
+            GetPaymentTypeList
  */
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace bangazonCLI
         {
             _paymentList = new List<PaymentType>();
             db = new DatabaseInterface();
+
+            //This query gets all payment type information from the database
+            // and pushes the result into a list of payment types
             db.Query($@"
                 SELECT P.Id, P.CustomerId, P.Type, P.AccountNumber FROM PaymentType P
                
@@ -34,6 +38,8 @@ namespace bangazonCLI
                 }
             });
         }
+
+        //Adds a payment type to the database
         public void AddPaymentType(PaymentType payment)
         {
             _paymentList.Add(payment);
@@ -45,6 +51,7 @@ namespace bangazonCLI
             ");
         }
 
+        //return a list of all product types conected to the CustomerId passed in
         public List<PaymentType> GetPaymentTypesList(int customer)
         {
             return _paymentList.Where(p => p.CustomerId == customer).ToList();

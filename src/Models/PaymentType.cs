@@ -1,4 +1,9 @@
-namespace bangazonCLI
+/*author:   Sean Williams
+purpose:    Payment Types model
+methods:    NULL
+ */
+ 
+ namespace bangazonCLI
 {
     public class PaymentType
     {
