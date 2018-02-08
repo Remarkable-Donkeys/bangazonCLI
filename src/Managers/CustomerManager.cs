@@ -1,3 +1,10 @@
+/*author:   Kristen Norris
+purpose:    Handle database interactions pertaining to Customers
+methods:    Add: adds a customer to the database
+            GetAllCustomers: returns a list of all the customers in the database
+            SetActive: sets a customer as the active customer
+ */
+
 using System;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
@@ -36,6 +43,9 @@ namespace bangazonCLI
 
         public List<Customer> GetAllCustomers()
         {
+            //clears customer list so that data isn't duplicated if method is called again
+            _customerList.Clear();
+            
             //selects customer information from the database and adds it to a List<Customer>
             _db.Query($@"SELECT `Id`, `FirstName`, `LastName`, `DateCreated`, `LastActive`, `Address`, `City`, `State`, `PostalCode`, `Phone` FROM Customer",
             (SqliteDataReader reader) =>

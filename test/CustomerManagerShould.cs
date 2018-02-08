@@ -1,4 +1,8 @@
-
+/*author:   Kristen Norris
+purpose:    Customer Unit Tests
+Tests:    	AddNewCustomer
+			ActiveCustomer
+ */
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -41,19 +45,7 @@ namespace bangazonCLI.Tests
                 }
             }
             Assert.True(bobExists);
-
         }
-
-        // [Fact]
-        // public void ListCustomers()
-        // {
-        //     //adds customer to the list of customers
-        //     _manager.Add(_joe);
-        //     List<Customer> customerList = _manager.GetAllCustomers();
-
-        //     Assert.Contains(_joe, customerList);
-
-        // }
 
         public void ActiveCustomer()
         {
