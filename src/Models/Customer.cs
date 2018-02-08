@@ -12,13 +12,19 @@ namespace bangazonCLI
         public string State {get; set;}
         public string PostalCode {get; set;}
         public string Phone {get; set;}
+        public DateTime DateCreated {get; set;}
+        public DateTime LastActive {get; set;}
 
-
+    
         public Customer(string first, string last){
-            this.Id = 1;
             this.FirstName = first;
             this.LastName = last;
         }
+        public Customer(){
+
+        }
+
+
 
     }
 }

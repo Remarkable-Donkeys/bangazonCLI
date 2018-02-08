@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using System.Linq;
+using bangazonCLI;
 
 
 namespace bangazonCLI.Test
@@ -10,46 +11,61 @@ namespace bangazonCLI.Test
 
     public class BangazonCLI_Should
     {
-
+        DatabaseInterface db = new DatabaseInterface();
         [Fact]
         public void AddProduct()
         {
-
+            db.NukeDB();
+            db.CheckDatabase();
+            
             ProductManager manager = new ProductManager();
 
-            Product _product = new Product(1, "Book", "A book", 25.55, 2);
+            Product _product = new Product("Book", "A BOOK", 25.55, 2);
+            _product.CustomerId = 1;
+            int newId = manager.Add(_product);
+            var returnedProduct = manager.GetSingleProduct(newId);
 
-
-            Assert.Equal(_product.Name, "Book");
-            Assert.Equal(_product.Description, "A book");
-            Assert.Equal(_product.Price, 25.55);
-            Assert.Equal(_product.Quantity, 2);
-            Assert.Equal(_product.CustomerId, 1);
+            Assert.Equal("Book", returnedProduct.Name);
+            Assert.Equal("A BOOK", returnedProduct.Description);
+            Assert.Equal(25.55, returnedProduct.Price);
+            Assert.Equal(2, returnedProduct.Quantity);
+            Assert.Equal(1, returnedProduct.CustomerId);
 
         }
 
         [Fact]
         public void GetProducts()
         {
-            ProductManager manager = new ProductManager();
-            Product _product = new Product(1, "Book", "A book", 25.55, 2);
+            db.NukeDB();
+            db.CheckDatabase();
 
-            manager.Add(_product);
+            ProductManager manager = new ProductManager();
+            Product _product = new Product("Shirt", "A shirt", 35.43, 5);
+            _product.CustomerId = 1;
+            int newId = manager.Add(_product);
+            _product.Id = newId;
             List<Product> allProducts = manager.GetAllProducts();
-            Assert.Contains(_product, allProducts);
+            Assert.Equal(1, allProducts.Count());
         }
 
         [Fact]
 
         public void GetSingleProduct()
         {
-            ProductManager manager = new ProductManager();
-            Product _product = new Product(1, "Book", "A book", 25.55, 2);
-            manager.Add(_product);
-            int RequtestedProductIt = 1;
-            Product returnedProduct = manager.GetSingleProduct(RequtestedProductIt);
 
-            Assert.Equal(returnedProduct.Id, RequtestedProductIt);
+            db.NukeDB();
+            db.CheckDatabase();
+
+            ProductManager manager = new ProductManager();
+            Product _product = new Product("Necklace", "A necklace", 58.23, 1);
+            _product.CustomerId = 1;
+            int newId = manager.Add(_product);
+
+            Product returnedProduct = manager.GetSingleProduct(newId);
+
+
+
+            Assert.Equal(returnedProduct.Id, newId);
 
 
 
