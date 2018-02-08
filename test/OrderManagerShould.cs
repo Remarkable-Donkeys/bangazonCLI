@@ -23,7 +23,8 @@ namespace bangazonCLI.Tests
 		public OrderManagerShould()
 		{
 			_activeCustomerId = 1;
-			_product = new Product(1, "Book", "A book", 25.55, 2);
+			_product = new Product("Book", "A book", 25.55, 2);
+            _product.CustomerId = _activeCustomerId;
 
 			_order = new Order();
 
