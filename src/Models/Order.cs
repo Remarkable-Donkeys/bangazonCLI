@@ -17,9 +17,9 @@ namespace bangazonCLI
 		public int Id { get; set; }
 		public int CustomerId { get; set; }
 		public DateTime DateCreated { get; set; }
-		public int PaymentTypeId { get; set; }
+		public int? PaymentTypeId { get; set; }
 		// date ordered is the date of the order is closed
-        public DateTime DateOrdered { get; set; }
+        public DateTime? DateOrdered { get; set; }
 
 
         /***************/

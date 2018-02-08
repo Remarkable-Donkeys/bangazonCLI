@@ -130,7 +130,7 @@ namespace bangazonCLI.Tests
         [Fact]
         public void AddToOrderManager()
         {
-            _orderManager.AddOrder(_order);
+            int orderId = _orderManager.AddOrder(_order);
 
             List<Order> orderList = _orderManager.GetOrderList();
 
