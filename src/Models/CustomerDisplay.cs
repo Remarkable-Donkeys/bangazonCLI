@@ -33,10 +33,10 @@ namespace bangazonCLI
                 manager.SetActive(activeId);
 
                 //update the active customer LastActive Date with today's date
-                // DateTime activeDate = DateTime.Now;
-                // _db.Update($@"UPDATE Customer
-                //     SET LastActive = {activeDate}
-                //     WHERE Id = {activeId}");                
+                string activeDate = DateTime.Now.ToString();
+                _db.Update($@"UPDATE Customer
+                    SET LastActive = '{activeDate}'
+                    WHERE Id = {activeId};");                
             }
 
 
