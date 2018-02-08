@@ -19,11 +19,17 @@ namespace bangazonCLI.Test
 		PaymentTypeManager _manager;
 		DatabaseInterface db;
 
+		Customer testCustomer;
+
+		CustomerManager customerManager;
+
 		public PaymentTypeManagerShould()
 		{
 			db = new DatabaseInterface();
 			_payment = new PaymentType(1, "VISA", "1234567");
 			_manager = new PaymentTypeManager();
+			testCustomer = new Customer("Sean", "Williams");
+			customerManager = new CustomerManager();
 
 		}
         [Fact]
@@ -31,12 +37,9 @@ namespace bangazonCLI.Test
         {
 			db.NukeDB();
 			db.CheckDatabase();
-			db.Insert($@"
-            INSERT INTO Customer
-            (Id, FirstName, LastName, DateCreated)
-            VALUES
-            (null, 'Sean', 'Williams', 2018-01-01)
-            ");
+			Customer testCustomer = new Customer("Sean", "Williams");
+			CustomerManager customerManager = new CustomerManager();
+			customerManager.Add(testCustomer);
 			List<PaymentType> paymentList = new List<PaymentType>();
 			_manager.AddPaymentType(_payment);
 			db.Query($@"
@@ -69,13 +72,7 @@ namespace bangazonCLI.Test
 		{
 			db.NukeDB();
 			db.CheckDatabase();
-			db.Insert($@"
-            INSERT INTO Customer
-            (Id, FirstName, LastName, DateCreated)
-            VALUES
-            (null, 'Sean', 'Williams', 2018-01-01)
-            ");
-			CustomerManager customerManager = new CustomerManager();
+			customerManager.Add(testCustomer);
             customerManager.SetActive(1);
 			_manager.AddPaymentType(_payment);
 			List<PaymentType> paymentList = _manager.GetPaymentTypesList(customerManager.GetActive());
