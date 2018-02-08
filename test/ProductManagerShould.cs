@@ -13,6 +13,7 @@ namespace bangazonCLI.Test
     {
         DatabaseInterface db = new DatabaseInterface();
         ProductManager manager = new ProductManager();
+        CustomerManager custManager = new CustomerManager();
         [Fact]
         public void AddProduct()
         {
@@ -20,11 +21,8 @@ namespace bangazonCLI.Test
             db.NukeDB();
             db.CheckDatabase();
 
-            db.Insert($@"
-            INSERT INTO Customer
-            (Id, FirstName, LastName, DateCreated)
-            VALUES
-            (null, 'Tyler', 'Bowman', '2018-01-01')");
+            Customer tyler = new Customer("Tyler", "Bowman");
+            custManager.Add(tyler);
 
             ProductManager manager = new ProductManager();
 
@@ -47,11 +45,8 @@ namespace bangazonCLI.Test
         {
             db.NukeDB();
             db.CheckDatabase();
-            db.Insert($@"
-            INSERT INTO Customer
-            (Id, FirstName, LastName, DateCreated)
-            VALUES
-            (null, 'Tyler', 'Bowman', '2018-01-01')");
+            Customer tyler = new Customer("Tyler", "Bowman");
+            custManager.Add(tyler);
 
             Product _product = new Product("Shirt", "A shirt", 35.43, 5);
             _product.CustomerId = 1;
@@ -68,11 +63,8 @@ namespace bangazonCLI.Test
 
             db.NukeDB();
             db.CheckDatabase();
-            db.Insert($@"
-            INSERT INTO Customer
-            (Id, FirstName, LastName, DateCreated)
-            VALUES
-            (null, 'Tyler', 'Bowman', '2018-01-01')");
+            Customer tyler = new Customer("Tyler", "Bowman");
+            custManager.Add(tyler);
 
             Product _product = new Product("Necklace", "A necklace", 58.23, 1);
             _product.CustomerId = 1;
@@ -94,14 +86,16 @@ namespace bangazonCLI.Test
         {
             db.NukeDB();
             db.CheckDatabase();
+            Customer tyler = new Customer("Tyler", "Bowman");
+            custManager.Add(tyler);
 
             Product _product = new Product("Jeans", "A pair of js", 45.32, 1);
             _product.CustomerId = 1;
-            
-            int newId = manager.Add(_product);
-            _product.Description= "A pair of JEANS";
 
-            manager.Update(newId, 1,  _product);
+            int newId = manager.Add(_product);
+            _product.Description = "A pair of JEANS";
+
+            manager.Update(newId, 1, _product);
 
             Product updatedProduct = manager.GetSingleProduct(newId);
 
@@ -115,12 +109,14 @@ namespace bangazonCLI.Test
         {
             db.NukeDB();
             db.CheckDatabase();
+            Customer tyler = new Customer("Tyler", "Bowman");
+            custManager.Add(tyler);
 
-             Product _product = new Product("Jeans", "A pair of js", 45.32, 1);
+            Product _product = new Product("Jeans", "A pair of js", 45.32, 1);
             _product.CustomerId = 1;
             Product _product2 = new Product("Necklace", "A necklace", 58.23, 1);
             _product2.CustomerId = 1;
-    
+
             int newId = manager.Add(_product);
             manager.Add(_product2);
 
