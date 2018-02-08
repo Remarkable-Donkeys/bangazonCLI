@@ -28,12 +28,13 @@ namespace bangazonCLI
         public List<Product> GetAllProducts()
         {
             List<Product> AllProducts = new List<Product>();
-            Product returnedProduct = new Product();
             string sql = $"SELECT * FROM Product";
             db.Query(sql, (SqliteDataReader reader) =>
             {
                 while (reader.Read())
                 {
+                    Product returnedProduct = new Product();
+                    
                     returnedProduct.Id = reader.GetInt32(0);
                     returnedProduct.Name = reader[1].ToString();
                     returnedProduct.Description = reader[2].ToString();

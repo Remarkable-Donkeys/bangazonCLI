@@ -11,6 +11,9 @@ namespace bangazonCLI
             CustomerManager cManager = new CustomerManager();
 
             db.CheckDatabase();
+            
+
+            ProductSellMenu.DisplayMenu();
         }
     }
 }
