@@ -15,9 +15,16 @@ namespace bangazonCLI.Test
         [Fact]
         public void AddProduct()
         {
+
             db.NukeDB();
             db.CheckDatabase();
-            
+
+            db.Insert($@"
+            INSERT INTO Customer
+            (Id, FirstName, LastName, DateCreated)
+            VALUES
+            (null, 'Tyler', 'Bowman', '2018-01-01')");
+
             ProductManager manager = new ProductManager();
 
             Product _product = new Product("Book", "A BOOK", 25.55, 2);
@@ -38,6 +45,11 @@ namespace bangazonCLI.Test
         {
             db.NukeDB();
             db.CheckDatabase();
+            db.Insert($@"
+            INSERT INTO Customer
+            (Id, FirstName, LastName, DateCreated)
+            VALUES
+            (null, 'Tyler', 'Bowman', '2018-01-01')");
 
             ProductManager manager = new ProductManager();
             Product _product = new Product("Shirt", "A shirt", 35.43, 5);
@@ -55,6 +67,11 @@ namespace bangazonCLI.Test
 
             db.NukeDB();
             db.CheckDatabase();
+            db.Insert($@"
+            INSERT INTO Customer
+            (Id, FirstName, LastName, DateCreated)
+            VALUES
+            (null, 'Tyler', 'Bowman', '2018-01-01')");
 
             ProductManager manager = new ProductManager();
             Product _product = new Product("Necklace", "A necklace", 58.23, 1);
