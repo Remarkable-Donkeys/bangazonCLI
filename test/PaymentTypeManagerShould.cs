@@ -1,4 +1,10 @@
-using System;
+/*author:   Sean Williams
+purpose:    Payment Types Unit Tests
+Tests:    	AddPaymentType
+			GetPaymentTypesList
+ */
+ 
+ using System;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 using Xunit;
@@ -16,7 +22,6 @@ namespace bangazonCLI.Test
 		public PaymentTypeManagerShould()
 		{
 			db = new DatabaseInterface();
-			db.CheckDatabase();
 			_payment = new PaymentType(1, "VISA", "1234567");
 			_manager = new PaymentTypeManager();
 
@@ -24,6 +29,8 @@ namespace bangazonCLI.Test
         [Fact]
         public void AddPaymentType()
         {
+			db.NukeDB();
+			db.CheckDatabase();
 			db.Insert($@"
             INSERT INTO Customer
             (Id, FirstName, LastName, DateCreated)
@@ -60,6 +67,14 @@ namespace bangazonCLI.Test
 		[Fact]
 		public void GetPaymentTypesList()
 		{
+			db.NukeDB();
+			db.CheckDatabase();
+			db.Insert($@"
+            INSERT INTO Customer
+            (Id, FirstName, LastName, DateCreated)
+            VALUES
+            (null, 'Sean', 'Williams', 2018-01-01)
+            ");
 			CustomerManager customerManager = new CustomerManager();
             customerManager.SetActive(1);
 			_manager.AddPaymentType(_payment);
