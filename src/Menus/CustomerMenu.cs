@@ -31,26 +31,35 @@ namespace bangazonCLI
         {
             int choice2 = Show();
 
-            switch (choice2)
+            //if choice2 is 1-5 then go into the switch, else stay on the Customer Menu
+            if (choice2 < 6 && choice2 != 0)
             {
-                case 1:
-                    //Add Payment Type
-                    break;
-                case 2:
-                    //Go to Selling Product Menu
-                    break;
-                case 3:
-                    //Go to Purchasing Product Menu
-                    break;
-                case 4:
-                    //Show Revenue Report
-                    break;
-                case 5:
-                    //reset ActiveCustomerId 
-                    CustomerManager.ActiveCustomerId = 0;
-                    //return to Main Menu
-                    return;
+                switch (choice2)
+                {
+                    case 1:
+                        //Add Payment Type
+                        break;
+                    case 2:
+                        //Go to Selling Product Menu
+                        break;
+                    case 3:
+                        //Go to Purchasing Product Menu
+                        break;
+                    case 4:
+                        //Show Revenue Report
+                        break;
+                    case 5:
+                        //reset ActiveCustomerId 
+                        CustomerManager.ActiveCustomerId = 0;
+                        //return to Main Menu
+                        return;
+                }
             }
+            else
+            {
+                DisplayMenu();
+            }
+
         }
 
     }

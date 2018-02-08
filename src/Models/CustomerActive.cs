@@ -17,7 +17,7 @@ namespace bangazonCLI
             Console.Clear();
             Console.WriteLine("To return to main menu enter 0");
             Console.WriteLine("*************************************************");
-            Console.WriteLine("Please type the number of the active customer, then press enter");
+            Console.WriteLine("Please enter the number of the active customer");
             //list of all customers in database
             List<Customer> currentCustomers = manager.GetAllCustomers();
             //number for numbered list
@@ -42,6 +42,10 @@ namespace bangazonCLI
 
             if (listItem > 0)
             {
+                if(!customerId.ContainsKey(listItem)){
+                    //if the user enters a list item that does not exist then user will stay on the current screen
+                    SelectCurrent(manager, db);
+                } else{
                 //gets the customer Id that matches the list item entered
                 int activeId = customerId[listItem];
                 //user selects a customer to set as active
@@ -55,6 +59,8 @@ namespace bangazonCLI
 
                 //bring user to the Customer Menu
                 CustomerMenu.DisplayMenu();
+                }
+
             }
             else
             {
