@@ -10,8 +10,18 @@ namespace bangazonCLI
 		/*******************/
 		/* Class Variables */
 		/*******************/
-		private static DatabaseInterface _db = new DatabaseInterface();
+		private string DBenvironment;
+		private static DatabaseInterface _db;
 		private List<Order> _orderList = new List<Order>();
+
+		/***************/
+		/* Constructor */
+		/***************/
+		public OrderManager(string DBenvironment)
+		{
+			this.DBenvironment = DBenvironment;
+			_db = new DatabaseInterface(DBenvironment);
+		}
 
 		/*****************/
 		/* Class Methods */
@@ -21,21 +31,22 @@ namespace bangazonCLI
 			return _db.Insert($@"
 				INSERT INTO `Order`
 				(`Id`, `CustomerId`, `DateCreated`)
-				VALUES
-				(null, {order.CustomerId}, '{order.DateCreated}')
+				VALUES (null, {order.CustomerId}, '{order.DateCreated}')
 			");
 			// _orderList.Add(order);
 		}
 
 		public List<Order> GetOrderList()
 		{
+			_orderList.Clear();
+
 			//selects customer information from the database and adds it to a List<Customer>
             _db.Query($@"SELECT `Id`, `CustomerId`, `DateCreated`, `PaymentTypeId`, `DateOrdered` FROM `Order`",
             (SqliteDataReader reader) =>
                     {
                         while (reader.Read())
                         {
-                            Order order = new Order();
+                            Order order = new Order(DBenvironment);
                             
 							order.Id = reader.GetInt32(0);
 							order.CustomerId = reader.GetInt32(1);
@@ -54,7 +65,7 @@ namespace bangazonCLI
 		public Boolean IsOrderInDatabase(int orderId)
 		{
 			// return _orderList.Contains(order);
-			Order order = new Order();
+			Order order = new Order(DBenvironment);
 			// return _orderList.Where(o => o.Id == orderId).Single();
 			//selects customer information from the database and adds it to a List<Customer>
             _db.Query($@"SELECT `Id`, `CustomerId`, `DateCreated`, `PaymentTypeId`, `DateOrdered` FROM `Order` WHERE Id={orderId}",
@@ -75,12 +86,12 @@ namespace bangazonCLI
 
 		public void RemoveAllOrders()
 		{
-			_db.Update($@"DELETE FROM `ORDER`");
+			_db.Update($@"DELETE FROM `Order`");
 		}
 
 		public Order GetSingleOrder(int orderId)
 		{
-			Order order = new Order();
+			Order order = new Order(DBenvironment);
 			
             _db.Query($@"SELECT `Id`, `CustomerId`, `DateCreated`, `PaymentTypeId`, `DateOrdered` FROM `Order` WHERE Id={orderId}",
 				(SqliteDataReader reader) =>

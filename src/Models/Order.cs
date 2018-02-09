@@ -10,7 +10,8 @@ namespace bangazonCLI
         /*******************/
         /* Class Variables */
         /*******************/
-        private static DatabaseInterface _db = new DatabaseInterface();
+        private DatabaseInterface _db;
+        private string databaseEnvironment;
         private List<Product> _productList = new List<Product>();
 
         /********************/
@@ -27,7 +28,8 @@ namespace bangazonCLI
         /***************/
         /* Constructor */
         /***************/
-        public Order(){
+        public Order(string DBenvironment){
+            _db =  new DatabaseInterface(DBenvironment);
             _productList = new List<Product>();
         }
 
@@ -48,6 +50,7 @@ namespace bangazonCLI
         }
         public List<Product> GetProductList()
         {
+            _productList.Clear();
             //selects customer information from the database and adds it to a List<Customer>
             _db.Query($@"
                 SELECT p.Id, p.Name, p.Description, p.Price, p.CustomerId, p.Quantity, p.DateAdded 

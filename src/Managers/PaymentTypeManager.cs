@@ -64,10 +64,10 @@ namespace bangazonCLI
         }
 
         //Adds a payment type to the database
-        public void AddPaymentType(PaymentType payment)
+        public int AddPaymentType(PaymentType payment)
         {
             _paymentList.Add(payment);
-		    db.Insert($@"
+		    return db.Insert($@"
             INSERT INTO PaymentType
             (Id, CustomerId, Type, AccountNumber)
             VALUES
