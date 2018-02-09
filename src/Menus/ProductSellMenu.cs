@@ -44,7 +44,7 @@ namespace bangazonCLI
                         break;
 
                     case 4:
-
+                        CustomerMenu.DisplayMenu();
                         break;
                 }
             } else {

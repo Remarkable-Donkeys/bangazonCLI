@@ -21,8 +21,9 @@ namespace bangazonCLI
             //gets the id of the active customer
             int customerId = CustomerManager.ActiveCustomerId;
 
-            //take user input to add a new customer to the database and return the id of the newly added customer
+            //create a new payment type for the active customer
             PaymentType newPayment = new PaymentType(customerId, type, number);
+            //add the payment type to the database
             manager.AddPaymentType(newPayment);
             //bring user to the Customer Menu
             CustomerMenu.DisplayMenu();
