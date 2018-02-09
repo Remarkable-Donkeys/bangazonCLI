@@ -16,11 +16,14 @@ namespace bangazonCLI.Tests
         //creates new customer
         private Customer _joe = new Customer("Joe", "Smith");
         //new instance of customer manager
-        private CustomerManager _manager = new CustomerManager();
+        private CustomerManager _manager = new CustomerManager("BANGAZONTEST");
+        private DatabaseInterface _db = new DatabaseInterface("BANGAZONTEST");
+
 
         [Fact]
         public void AddNewCustomer()
         {
+            _db.CheckDatabase();
             //create a new customer
             Customer bob = new Customer(){
                 FirstName = "Bob",
@@ -49,6 +52,8 @@ namespace bangazonCLI.Tests
 
         public void ActiveCustomer()
         {
+            _db.CheckDatabase();
+
             //passes in the Customer's Id to make that customer the active customer
             _manager.SetActive(2);
 

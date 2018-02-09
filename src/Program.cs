@@ -5,10 +5,12 @@ namespace bangazonCLI
     class Program
     {
         static void Main(string[] args)
-        {
-            DatabaseInterface db = new DatabaseInterface();
 
-            CustomerManager cManager = new CustomerManager();
+        {
+            DatabaseInterface db = new DatabaseInterface("BANGAZONCLI");
+
+
+            CustomerManager cManager = new CustomerManager("BANGAZONCLI");
 
             db.CheckDatabase();
 
@@ -40,5 +42,6 @@ namespace bangazonCLI
             }
             while (choice1 != 5);
     }
+
     }
 }

@@ -8,16 +8,17 @@ namespace bangazonCLI
     public class ProductManager
     {
 
-        DatabaseInterface db = new DatabaseInterface();
+        DatabaseInterface db;
+        public ProductManager(string DBenvironment)
+        {
+            db = new DatabaseInterface(DBenvironment);
+        }
         private int _activeCustomerId = 1;
 
 
         //method to ADD a product to the system
         public int Add(Product newProduct)
         {
-            
-            
-
             string sql = $"insert into Product (Id, Name, Description, Price, Quantity, CustomerId, DateAdded) values (null, '{newProduct.Name}', '{newProduct.Description}', {newProduct.Price}, {newProduct.Quantity}, {newProduct.CustomerId}, '2018-01-01')";
 
             int newId = db.Insert(sql);
@@ -28,12 +29,13 @@ namespace bangazonCLI
         public List<Product> GetAllProducts()
         {
             List<Product> AllProducts = new List<Product>();
-            Product returnedProduct = new Product();
             string sql = $"SELECT * FROM Product";
             db.Query(sql, (SqliteDataReader reader) =>
             {
                 while (reader.Read())
                 {
+                    Product returnedProduct = new Product();
+                    
                     returnedProduct.Id = reader.GetInt32(0);
                     returnedProduct.Name = reader[1].ToString();
                     returnedProduct.Description = reader[2].ToString();
