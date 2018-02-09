@@ -256,7 +256,7 @@ namespace bangazonCLI.Tests
 
             _order.CustomerId = _customerManager.Add(bob);
 
-            PaymentType _paymentType = new PaymentType(1, "VISA", "1234567");
+            PaymentType _paymentType = new PaymentType(_order.CustomerId, "VISA", "1234567");
 
             PaymentTypeManager _paymentTypeManager = new PaymentTypeManager(DBenvironment);
             
