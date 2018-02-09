@@ -66,17 +66,26 @@ namespace bangazonCLI.Test
 			Assert.Equal(_payment.CustomerId, paymentList[0].CustomerId);
         }
 
-		// // [Fact]
-		// // public void GetPaymentTypesList()
-		// // {
-		// // 	_db.NukeDB();
-		// // 	_db.CheckDatabase();
-		// // 	_payment.CustomerId= _customerManager.Add(_testCustomer);
-        // //     _customerManager.SetActive(1);
-		// // 	_manager.AddPaymentType(_payment);
-		// // 	List<PaymentType> paymentList = _manager.GetPaymentTypesList(_customerManager.GetActive());
-		// // 	_db.NukeDB();
-		// // 	Assert.Contains(_payment, paymentList);
-		// }
+		[Fact]
+		public void GetPaymentTypesList()
+		{
+			_db.NukeDB();
+			_db.CheckDatabase();
+			bool exists = false;
+			_payment.CustomerId= _customerManager.Add(_testCustomer);
+            _customerManager.SetActive(_payment.CustomerId);
+			_manager.AddPaymentType(_payment);
+			List<PaymentType> paymentList = _manager.GetPaymentTypesList(_customerManager.GetActive());
+
+			foreach (PaymentType item in paymentList)
+			{
+				if (item.AccountNumber == _payment.AccountNumber && item.CustomerId == _payment.CustomerId
+					&& item.Type == _payment.Type)
+					{
+						exists = true;
+					}
+			}
+			Assert.True(exists);
+		}
     }
 }
