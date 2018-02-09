@@ -13,12 +13,12 @@ namespace bangazonCLI.Test
     {
         DatabaseInterface db = new DatabaseInterface("BANGAZONTEST");
         ProductManager manager = new ProductManager("BANGAZONTEST");
-        CustomerManager custManager = new CustomerManager();
+        CustomerManager custManager = new CustomerManager("BANGAZONTEST");
         [Fact]
         public void AddProduct()
         {
 
-            db.NukeDB();
+            // db.NukeDB();
             db.CheckDatabase();
 
             
