@@ -1,4 +1,8 @@
-
+/*author:   Kristen Norris
+purpose:    Customer Unit Tests
+Tests:    	AddNewCustomer
+			ActiveCustomer
+ */
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -12,11 +16,14 @@ namespace bangazonCLI.Tests
         //creates new customer
         private Customer _joe = new Customer("Joe", "Smith");
         //new instance of customer manager
-        private CustomerManager _manager = new CustomerManager();
+        private CustomerManager _manager = new CustomerManager("BANGAZONTEST");
+        private DatabaseInterface _db = new DatabaseInterface("BANGAZONTEST");
+
 
         [Fact]
         public void AddNewCustomer()
         {
+            _db.CheckDatabase();
             //create a new customer
             Customer bob = new Customer(){
                 FirstName = "Bob",
@@ -41,22 +48,12 @@ namespace bangazonCLI.Tests
                 }
             }
             Assert.True(bobExists);
-
         }
-
-        // [Fact]
-        // public void ListCustomers()
-        // {
-        //     //adds customer to the list of customers
-        //     _manager.Add(_joe);
-        //     List<Customer> customerList = _manager.GetAllCustomers();
-
-        //     Assert.Contains(_joe, customerList);
-
-        // }
 
         public void ActiveCustomer()
         {
+            _db.CheckDatabase();
+
             //passes in the Customer's Id to make that customer the active customer
             _manager.SetActive(2);
 
