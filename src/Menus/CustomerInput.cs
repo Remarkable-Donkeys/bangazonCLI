@@ -11,34 +11,35 @@ namespace bangazonCLI
         public static void New(CustomerManager manager)
         {
             //user input to create a new customer
+            Customer newCustomer = new Customer();
             Console.Clear();
             Console.WriteLine("Enter customer first name");
             Console.Write("> ");
-            string firstName = Console.ReadLine();
+            newCustomer.FirstName = Console.ReadLine();
             Console.WriteLine("Enter customer last name");
             Console.Write("> ");
-            string lastName = Console.ReadLine();
+            newCustomer.LastName = Console.ReadLine();
             Console.WriteLine("Enter customer address");
             Console.Write("> ");
-            string address = Console.ReadLine();
+            newCustomer.Address = Console.ReadLine();
             Console.WriteLine("Enter customer city");
             Console.Write("> ");
-            string city = Console.ReadLine();
+            newCustomer.City = Console.ReadLine();
             Console.WriteLine("Enter customer state");
             Console.Write("> ");
-            string state = Console.ReadLine();
+            newCustomer.State = Console.ReadLine();
             Console.WriteLine("Enter customer postal code");
             Console.Write("> ");
-            string postalCode = Console.ReadLine();
+            newCustomer.PostalCode = Console.ReadLine();
             Console.WriteLine("Enter customer phone number");
             Console.Write("> ");
-            string phoneNumber = Console.ReadLine();
+            newCustomer.Phone = Console.ReadLine();
             //when you create a new customer the DateCreated and the LastActive is set as the current Date/Time
-            DateTime dateCreated = DateTime.Now;
-            DateTime lastActive = DateTime.Now;
+            newCustomer.DateCreated = DateTime.Now;
+            newCustomer.LastActive = DateTime.Now;
 
-            //take user input to add a new customer to the database and return the id of the newly added customer
-            int activeId = manager.Add(firstName, lastName, address, city, state, postalCode, phoneNumber, dateCreated, lastActive);
+            //add a new customer to the database and return the id of the newly added customer
+            int activeId = manager.Add(newCustomer);
             //set that customer as active
             manager.SetActive(activeId);
             //bring user to the Customer Menu

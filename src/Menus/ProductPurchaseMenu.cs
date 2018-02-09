@@ -1,20 +1,23 @@
+/*author:   Kristen Norris
+purpose:    Display the Purchase Product Menu
+methods:    Show: shows the Purchase Product Menu in the console (without functionality)
+            DisplayMenu: switch statment to give functionality to the Purchase Product Menu
+ */
 using System;
 
 namespace bangazonCLI
 {
-    public class ProductSellMenu
+    public class ProductPurchaseMenu
     {
-        private int _activeCustomer = CustomerManager.ActiveCustomerId;
         public static int Show()
         {
 
             Console.Clear();
-            Console.WriteLine("Sell Products");
+            Console.WriteLine("Purchase Products");
             Console.WriteLine("**********************");
-            Console.WriteLine("1. Add New Product");
-            Console.WriteLine("2. Update a Product");
-            Console.WriteLine("3. Delete Product");
-            Console.WriteLine("4. Return to Customer Menu");
+            Console.WriteLine("1. Add product to shopping cart");
+            Console.WriteLine("2. Complete an order");
+            Console.WriteLine("3. Return to Customer Menu");
             Console.Write("> ");
             int userChoice = Int32.Parse(Console.ReadLine());
 
@@ -24,26 +27,20 @@ namespace bangazonCLI
         public static void DisplayMenu()
         {
             int choice = Show();
-            if (choice <= 4 && choice != 0)
+            if (choice <= 3 && choice != 0)
             {
                 switch (choice)
                 {
                     case 1:
-
-                        AddSellProductInterface.Show();
+                        //add product to order
                         break;
 
                     case 2:
-
-                        UpdateSellProductInterface.Show();
+                        //complete an order
                         break;
 
                     case 3:
-
-                        DeleteSellProductInterfcae.Show();
-                        break;
-
-                    case 4:
+                        //return to customer menu
                         CustomerMenu.DisplayMenu();
                         break;
                 }
