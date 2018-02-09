@@ -8,7 +8,11 @@ namespace bangazonCLI
     public class ProductManager
     {
 
-        DatabaseInterface db = new DatabaseInterface();
+        DatabaseInterface db;
+        public ProductManager(string DBenvironment)
+        {
+            db = new DatabaseInterface(DBenvironment);
+        }
         private int _activeCustomerId = 1;
 
 

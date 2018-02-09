@@ -5,19 +5,21 @@ namespace bangazonCLI
 {
     public class DatabaseInterface
     {
-        
-        private string _connectionString = $"Data Source={Environment.GetEnvironmentVariable("BANGAZONCLI")}";
+       
+        private string _connectionString;
         private SqliteConnection _connection;
 
 
-        public DatabaseInterface()
+        public DatabaseInterface(string EVariable)
         {
             //sets up environment variable connection
             // string path = System.Environment.GetEnvironmentVariable("BANGAZONCLI");
             // _connectionString = $"Data Source=/Users/knorris/workspace/server-side/bangazonCLI/src/bangazoncli.db";
-
+            _connectionString = $"Data Source={Environment.GetEnvironmentVariable($"{EVariable}")}";
             _connection = new SqliteConnection(_connectionString);
         }
+       
+        
 
         //used to return value of the unique id when new data is entered
         public void Query(string command, Action<SqliteDataReader> handler)

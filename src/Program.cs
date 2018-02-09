@@ -6,7 +6,7 @@ namespace bangazonCLI
     {
         static void Main(string[] args)
         {
-            DatabaseInterface db = new DatabaseInterface();
+            DatabaseInterface db = new DatabaseInterface("BANGAZONCLI");
             
             CustomerManager cManager = new CustomerManager();
 

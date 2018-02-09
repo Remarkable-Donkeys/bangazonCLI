@@ -11,8 +11,8 @@ namespace bangazonCLI.Test
 
     public class BangazonCLI_Should
     {
-        DatabaseInterface db = new DatabaseInterface();
-        ProductManager manager = new ProductManager();
+        DatabaseInterface db = new DatabaseInterface("BANGAZONTEST");
+        ProductManager manager = new ProductManager("BANGAZONTEST");
         CustomerManager custManager = new CustomerManager();
         [Fact]
         public void AddProduct()
@@ -21,10 +21,10 @@ namespace bangazonCLI.Test
             db.NukeDB();
             db.CheckDatabase();
 
+            
             Customer tyler = new Customer("Tyler", "Bowman");
             custManager.Add(tyler);
 
-            ProductManager manager = new ProductManager();
 
 
             Product _product = new Product("Book", "A BOOK", 25.55, 2);

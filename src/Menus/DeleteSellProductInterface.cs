@@ -6,7 +6,7 @@ namespace bangazonCLI
 {
     public static class DeleteSellProductInterfcae
     {
-        static ProductManager ProdManager = new ProductManager();
+        static ProductManager ProdManager = new ProductManager("BANGAZONCLI");
 
         public static void Show()
         {

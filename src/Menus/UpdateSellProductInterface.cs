@@ -6,7 +6,7 @@ namespace bangazonCLI
 {
     public static class UpdateSellProductInterface
     {
-        static ProductManager prodManager = new ProductManager();
+        static ProductManager prodManager = new ProductManager("BANGAZONCLI");
 
         public static void Show()
         {

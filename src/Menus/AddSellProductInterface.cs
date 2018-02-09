@@ -5,7 +5,7 @@ namespace bangazonCLI
     public static class AddSellProductInterface
     {
         //Create an instance of the ProductManager 
-        static ProductManager prodManager = new ProductManager();
+        static ProductManager prodManager = new ProductManager("BANGAZONCLI");
 
         //Method that will display prompts to get required data for a new product.
         public static void Show()
