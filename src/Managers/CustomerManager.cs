@@ -13,9 +13,13 @@ namespace bangazonCLI
 {
     public class CustomerManager
     {
-        private static DatabaseInterface _db = new DatabaseInterface();
-        private List<Customer> _customerList = new List<Customer>();
 
+        private DatabaseInterface _db;
+        public CustomerManager(string databaseEnvironment){
+            _db =  new DatabaseInterface(databaseEnvironment);
+        }
+
+        private List<Customer> _customerList = new List<Customer>();
         public static int ActiveCustomerId { get; set; }
 
 
