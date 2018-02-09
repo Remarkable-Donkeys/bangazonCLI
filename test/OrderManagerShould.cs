@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace bangazonCLI.Tests
@@ -38,88 +39,29 @@ namespace bangazonCLI.Tests
         /* Order Class Methods */
         /***********************/
 
-        // some of the Order functionality needs to be moved to a new manager and class called OrderedProduct
-
-        // Add product to order
+        // Add product to order and list products from order
         [Fact]
         public void AddProductToOrder()
         {
-			_order.AddProduct(_product);
+            _product.CustomerId = 1;
+            ProductManager productdManager = new ProductManager();
+            _product.Id = productdManager.Add(_product);
 
-            List<Product> orderProductList = _order.GetProductList();
-            
-            Assert.Contains(_product, orderProductList);
-        }
-
-        // List all products in an order
-        [Fact]
-        public void ListProductsInOrder()
-        {
-            if(_order.GetProductList().Count < 1)
-            {
-                _order.AddProduct(_product);
-            }
-
-            List<Product> orderProductList = _order.GetProductList();
-            
-            Assert.Contains(_product, orderProductList);
-        }
-
-        // Remove all products from order
-        [Fact]
-        public void RemoveAllProductsFromOrder()
-        {
-            if(_order.GetProductList().Count < 1)
-            {
-                _order.AddProduct(_product);
-            }
-
-            List<Product> orderProductList = _order.GetProductList();
-            
-            Assert.Contains(_product, orderProductList);
-
-            _order.RemoveAllProducts();
-
-            Boolean isProductCountGreaterThanZero = _order.GetProductList().Count > 0;
-
-            Assert.False(isProductCountGreaterThanZero);
-        }
-
-        // Is product in order, based on product id
-        [Fact]
-        public void IsProductInOrder()
-        {
-            if(_order.GetProductList().Count > 0)
-            {
-                _order.RemoveAllProducts();
-            }
-
-            List<Product> orderProductList = _order.GetProductList();
-
-            Boolean isProductInOrder = _order.IsProductInOrder(_product);
-
-            Assert.False(isProductInOrder);
+            _order.Id = _orderManager.AddOrder(_order);
 
             _order.AddProduct(_product);
 
-            isProductInOrder = _order.IsProductInOrder(_product);
-
-            Assert.True(isProductInOrder);
-        }
-
-        // Get single product from order
-        [Fact]
-        public void GetSingleProductFromOrder()
-        {
-            if(_order.GetProductList().Count < 1)
-            {
-                _order.AddProduct(_product);
-            }
-            int productId = _product.Id;
-
-            Product product = _order.GetProduct(productId);
-
-            Assert.Equal(product, _product);
+            List<Product> orderProductList = _order.GetProductList();
+            
+            Product productInDb = orderProductList.Where(p => p.Id == _product.Id).Single();
+            
+            Assert.Equal(_product.Id, productInDb.Id);
+            Assert.Equal(_product.Name, productInDb.Name);
+            Assert.Equal(_product.Description, productInDb.Description);
+            Assert.Equal(_product.Price, productInDb.Price);
+            Assert.Equal(_product.CustomerId, productInDb.CustomerId);
+            Assert.Equal(_product.Quantity, productInDb.Quantity);
+            // Assert.Equal(_product.DateAdded, productInDb.DateAdded);
         }
 
         /*******************************/
@@ -219,27 +161,20 @@ namespace bangazonCLI.Tests
             Assert.Equal(order.CustomerId, _order.CustomerId);
         }
 
-        // [Fact]
-        // public void CompleteOrder()
-        // {
-        //     int _paymentId = 1;
-        //     int orderId = _order.Id;
+        [Fact]
+        public void CompleteOrder()
+        {
+            int _paymentId = 1;
+            int orderId = _orderManager.AddOrder(_order);
 
-        //     if(_orderManager.GetOrderList().Count > 0)
-        //     {
-        //         _orderManager.RemoveAllOrders();
-        //     }
+            _orderManager.CompleteOrder(orderId, _paymentId);
+
+            Order order = _orderManager.GetSingleOrder(orderId);
+
+            Boolean paymentIdMatch = order.PaymentTypeId == _paymentId;
             
-        //     _orderManager.AddOrder(_order);
-
-        //     // to complete order a paymentId should be passed
-        //     _orderManager.CompleteOrder(orderId, _paymentId);
-
-        //     Order order = _orderManager.GetSingleOrder(orderId);
-
-        //     Boolean validOrderDate = order.DateOrdered > order.DateCreated;
-            
-        //     Assert.True(validOrderDate);
-        // }
+            Assert.NotNull(order.DateOrdered);
+            Assert.True(paymentIdMatch);
+        }
     }
 }
