@@ -256,10 +256,10 @@ namespace bangazonCLI
             {
                 _connection.Open();
                 SqliteCommand dbcmd = _connection.CreateCommand();
-                dbcmd.CommandText = "DELETE FROM OrderedProduct; DELETE FROM `Order`; DELETE FROM Product; DELETE FROM PaymentType; DELETE FROM Customer; DROP TABLE OrderedProduct; DROP TABLE `Order`; DROP TABLE Product; DROP TABLE PaymentType; DROP TABLE Customer;";
+                dbcmd.CommandText = "DELETE FROM OrderedProduct; DELETE FROM `Order`; DELETE FROM Product; DELETE FROM PaymentType; DELETE FROM Customer;";
                 dbcmd.ExecuteNonQuery();
                 dbcmd.Dispose();
-                // _connection.Close(); 
+                _connection.Close(); 
 
             }
 
