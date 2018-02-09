@@ -13,9 +13,8 @@ namespace bangazonCLI
         {
             //creates the active customer menu for the Bangazon Interface
             Console.Clear();
-            Console.WriteLine("*************************************************");
             Console.WriteLine("Active Customer Menu");
-            Console.WriteLine("*************************************************");
+            Console.WriteLine("**********************");
             Console.WriteLine("1. Create a payment option");
             Console.WriteLine("2. Selling Product Menu");
             Console.WriteLine("3. Purchasing Product Menu");
@@ -32,7 +31,7 @@ namespace bangazonCLI
             int choice2 = Show();
 
             //if choice2 is 1-5 then go into the switch, else stay on the Customer Menu
-            if (choice2 < 6 && choice2 != 0)
+            if (choice2 <= 5 && choice2 != 0)
             {
                 switch (choice2)
                 {
@@ -42,11 +41,12 @@ namespace bangazonCLI
                         PaymentTypeInput.New(pManager);
                         break;
                     case 2:
-                        //Go to Selling Product Menu
+                        //Go to Sell Product Menu
                         ProductSellMenu.DisplayMenu();
                         break;
                     case 3:
-                        //Go to Purchasing Product Menu
+                        //Go to Purchase Product Menu
+                        ProductPurchaseMenu.DisplayMenu();
                         break;
                     case 4:
                         //Show Revenue Report
