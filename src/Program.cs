@@ -34,6 +34,8 @@ namespace bangazonCLI
                         break;
                     case 3:
                         //stale items
+                                StaleProducts.OldProducts();
+
                         break;
                     case 4:
                         //popular items
