@@ -41,6 +41,7 @@ namespace bangazonCLI
                         break;
                     case 2:
                         //Go to Selling Product Menu
+                        ProductSellMenu.DisplayMenu();
                         break;
                     case 3:
                         //Go to Purchasing Product Menu
