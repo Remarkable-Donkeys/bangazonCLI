@@ -38,6 +38,8 @@ namespace bangazonCLI
                 {
                     case 1:
                         //Add Payment Type
+                        PaymentTypeManager pManager = new PaymentTypeManager("BANGAZONCLI");
+                        PaymentTypeInput.New(pManager);
                         break;
                     case 2:
                         //Go to Selling Product Menu
