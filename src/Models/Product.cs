@@ -11,7 +11,7 @@ namespace bangazonCLI
         public double Price { get; set; }
         public int Quantity { get; set; }
         public int CustomerId { get; set; }
-        public string DateAdded { get; set; }
+        public DateTime DateAdded { get; set; }
 
      
         public Product(){
@@ -27,8 +27,7 @@ namespace bangazonCLI
             Description = description;
             Price = price;
             Quantity = quantity;
-            DateAdded = "2018-01-01";
-
+            DateAdded = DateTime.Now;
         }
     }
 }
