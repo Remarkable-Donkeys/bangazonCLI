@@ -9,26 +9,23 @@ namespace bangazonCLI.Test
 {
 
 
-    public class BangazonCLI_Should
+    public class BangazonCLI_Should : IDisposable
     {
-        DatabaseInterface db = new DatabaseInterface();
-        ProductManager manager = new ProductManager();
-        CustomerManager custManager = new CustomerManager();
+        DatabaseInterface db = new DatabaseInterface("BANGAZONTEST");
+        ProductManager manager = new ProductManager("BANGAZONTEST");
+        CustomerManager custManager = new CustomerManager("BANGAZONTEST");
+        
         [Fact]
         public void AddProduct()
         {
-
-            db.NukeDB();
             db.CheckDatabase();
-
             Customer tyler = new Customer("Tyler", "Bowman");
-            custManager.Add(tyler);
+            int custId = custManager.Add(tyler);
 
-            ProductManager manager = new ProductManager();
 
 
             Product _product = new Product("Book", "A BOOK", 25.55, 2);
-            _product.CustomerId = 1;
+            _product.CustomerId = custId;
             int newId = manager.Add(_product);
             var returnedProduct = manager.GetSingleProduct(newId);
 
@@ -36,24 +33,30 @@ namespace bangazonCLI.Test
             Assert.Equal("A BOOK", returnedProduct.Description);
             Assert.Equal(25.55, returnedProduct.Price);
             Assert.Equal(2, returnedProduct.Quantity);
-            Assert.Equal(1, returnedProduct.CustomerId);
+            Assert.Equal(custId, returnedProduct.CustomerId);
 
         }
 
         [Fact]
         public void GetProducts()
         {
-            db.NukeDB();
-            db.CheckDatabase();
+           db.CheckDatabase();
             Customer tyler = new Customer("Tyler", "Bowman");
-            custManager.Add(tyler);
+            int CustId = custManager.Add(tyler);
 
             Product _product = new Product("Shirt", "A shirt", 35.43, 5);
-            _product.CustomerId = 1;
+            _product.CustomerId = CustId;
             int newId = manager.Add(_product);
             _product.Id = newId;
             List<Product> allProducts = manager.GetAllProducts();
-            Assert.Equal(1, allProducts.Count());
+            bool productExists = false;
+            foreach(Product p in allProducts)
+            {
+                if(p.Name == "Shirt" && p.Description == "A shirt" && p.Price == 35.43 && p.CustomerId == CustId && p.Id == newId && p.Quantity == 5){
+                    productExists = true;
+                }
+            }
+            Assert.True(productExists);
         }
 
         [Fact]
@@ -61,13 +64,12 @@ namespace bangazonCLI.Test
         public void GetSingleProduct()
         {
 
-            db.NukeDB();
             db.CheckDatabase();
             Customer tyler = new Customer("Tyler", "Bowman");
-            custManager.Add(tyler);
+           int CustId = custManager.Add(tyler);
 
             Product _product = new Product("Necklace", "A necklace", 58.23, 1);
-            _product.CustomerId = 1;
+            _product.CustomerId = CustId;
             int newId = manager.Add(_product);
 
             Product returnedProduct = manager.GetSingleProduct(newId);
@@ -84,18 +86,17 @@ namespace bangazonCLI.Test
 
         public void UpdateProduct()
         {
-            db.NukeDB();
-            db.CheckDatabase();
+           db.CheckDatabase();
             Customer tyler = new Customer("Tyler", "Bowman");
-            custManager.Add(tyler);
+            int CustId = custManager.Add(tyler);
 
             Product _product = new Product("Jeans", "A pair of js", 45.32, 1);
-            _product.CustomerId = 1;
+            _product.CustomerId = CustId;
 
             int newId = manager.Add(_product);
             _product.Description = "A pair of JEANS";
 
-            manager.Update(newId, 1, _product);
+            manager.Update(newId, CustId, _product);
 
             Product updatedProduct = manager.GetSingleProduct(newId);
 
@@ -107,20 +108,19 @@ namespace bangazonCLI.Test
 
         public void DeleteProduct()
         {
-            db.NukeDB();
-            db.CheckDatabase();
+           db.CheckDatabase();
             Customer tyler = new Customer("Tyler", "Bowman");
-            custManager.Add(tyler);
+           int CustId = custManager.Add(tyler);
 
             Product _product = new Product("Jeans", "A pair of js", 45.32, 1);
-            _product.CustomerId = 1;
+            _product.CustomerId = CustId;
             Product _product2 = new Product("Necklace", "A necklace", 58.23, 1);
-            _product2.CustomerId = 1;
+            _product2.CustomerId = CustId;
 
             int newId = manager.Add(_product);
             manager.Add(_product2);
 
-            manager.Delete(newId, 1);
+            manager.Delete(newId, CustId);
 
             List<Product> AllProducts = manager.GetAllProducts();
 
@@ -129,6 +129,24 @@ namespace bangazonCLI.Test
 
 
         }
+
+      
+
+        
+
+        void IDisposable.Dispose()
+        {
+            db.NukeDB();
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~BangazonCLI_Should() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+
     }
 }
 

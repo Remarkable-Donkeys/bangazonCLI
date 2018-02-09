@@ -5,8 +5,10 @@ namespace bangazonCLI
     class Program
     {
         static void Main(string[] args)
+
         {
             DatabaseInterface db = new DatabaseInterface("BANGAZONCLI");
+
 
             CustomerManager cManager = new CustomerManager("BANGAZONCLI");
 
@@ -40,5 +42,6 @@ namespace bangazonCLI
             }
             while (choice1 != 5);
     }
+
     }
 }

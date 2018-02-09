@@ -17,12 +17,12 @@ namespace bangazonCLI.Test
         private Order _order;
         private DatabaseInterface db;
 
-        public RevenueReportManagerShould()
-        {
-			db = new DatabaseInterface("BANGAZONTEST");
-            _manager = new RevenueReportManager("BANGAZONTEST");
-            _orders = OrderManager.GetSingleOrder(1);
-        }
+        // public RevenueReportManagerShould()
+        // {
+		// 	db = new DatabaseInterface("BANGAZONTEST");
+        //     _manager = new RevenueReportManager("BANGAZONTEST");
+        //     _orders = OrderManager.GetSingleOrder(1);
+        // }
 
         [Fact]
 
