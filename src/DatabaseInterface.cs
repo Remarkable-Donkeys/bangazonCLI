@@ -5,17 +5,15 @@ namespace bangazonCLI
 {
     public class DatabaseInterface
     {
-        
-        private string _connectionString = $"Data Source={Environment.GetEnvironmentVariable("BANGAZONCLI")}";
+
+        private string _connectionString;
         private SqliteConnection _connection;
 
-
-        public DatabaseInterface()
+        public DatabaseInterface(string environmentVariable)
         {
             //sets up environment variable connection
-            // string path = System.Environment.GetEnvironmentVariable("BANGAZONCLI");
-            // _connectionString = $"Data Source=/Users/knorris/workspace/server-side/bangazonCLI/src/bangazoncli.db";
-
+            // _connectionString = $"Data Source={Environment.GetEnvironmentVariable("BANGAZONCLI")}";
+            _connectionString = $"Data Source={Environment.GetEnvironmentVariable(environmentVariable)}";
             _connection = new SqliteConnection(_connectionString);
         }
 
@@ -246,9 +244,11 @@ namespace bangazonCLI
                 _connection.Close();
             }
         }
-        public void NukeDB() {
-            using(_connection){
-                 _connection.Open();
+        public void NukeDB()
+        {
+            using (_connection)
+            {
+                _connection.Open();
                 SqliteCommand dbcmd = _connection.CreateCommand();
                 dbcmd.CommandText = "DELETE FROM OrderedProduct; DELETE FROM `Order`; DELETE FROM Product; DELETE FROM PaymentType; DELETE FROM Customer; DROP TABLE OrderedProduct; DROP TABLE `Order`; DROP TABLE Product; DROP TABLE PaymentType; DROP TABLE Customer;";
                 dbcmd.ExecuteNonQuery();
