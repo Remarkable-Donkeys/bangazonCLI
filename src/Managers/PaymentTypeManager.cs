@@ -14,10 +14,34 @@ namespace bangazonCLI
         //Stores ALL payment types
         private List<PaymentType> _paymentList;
         private DatabaseInterface db;
+        public PaymentTypeManager(string dbInterface)
+        {
+            _paymentList = new List<PaymentType>();
+            db = new DatabaseInterface(dbInterface);
+
+            //This query gets all payment type information from the database
+            // and pushes the result into a list of payment types
+            db.Query($@"
+                SELECT P.Id, P.CustomerId, P.Type, P.AccountNumber FROM PaymentType P
+               
+            ", (SqliteDataReader handler) =>
+            {
+                while (handler.Read())
+                {
+                    PaymentType payment = new PaymentType(
+                        int.Parse(handler.GetString(1)),
+                        handler.GetString(2),
+                        handler.GetString(3)
+                    );
+                    payment.Id = int.Parse(handler.GetString(0));
+                    _paymentList.Add(payment);
+                }
+            });
+        } 
         public PaymentTypeManager()
         {
             _paymentList = new List<PaymentType>();
-            db = new DatabaseInterface();
+            db = new DatabaseInterface("BANGAZONCLI");
 
             //This query gets all payment type information from the database
             // and pushes the result into a list of payment types
