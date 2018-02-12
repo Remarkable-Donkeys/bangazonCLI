@@ -18,11 +18,22 @@ namespace bangazonCLI
             _order = new Order(databaseEnvironment);
         }
 
-        public static void Show(){
+        public void Show(){
             Console.Clear();
             Console.WriteLine("To return to main menu enter 0");
             Console.WriteLine("*************************************************");
             Console.WriteLine("Stale Products");
+            
+
+            //if user presses 0 go back to main menu, if any other number, stay on stale item menu
+            ConsoleKeyInfo enteredKey = Console.ReadKey();
+            Console.WriteLine("");
+            int exit = int.Parse(enteredKey.KeyChar.ToString());
+            if(exit == 0){
+                return;
+            } else {
+                Show();
+            }
         }
 
     }

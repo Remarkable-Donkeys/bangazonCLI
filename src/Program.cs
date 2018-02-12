@@ -7,10 +7,11 @@ namespace bangazonCLI
         static void Main(string[] args)
 
         {
-            DatabaseInterface db = new DatabaseInterface("BANGAZONCLI");
+            string environment = "BANGAZONCLI";
+            DatabaseInterface db = new DatabaseInterface(environment);
 
 
-            CustomerManager cManager = new CustomerManager("BANGAZONCLI");
+            CustomerManager cManager = new CustomerManager(environment);
 
             db.CheckDatabase();
 
@@ -34,7 +35,8 @@ namespace bangazonCLI
                         break;
                     case 3:
                         //stale items
-
+                        StaleProducts stale = new StaleProducts(environment);
+                        stale.Show();
                         break;
                     case 4:
                         //popular items
