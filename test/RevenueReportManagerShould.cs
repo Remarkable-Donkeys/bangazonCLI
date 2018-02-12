@@ -29,9 +29,9 @@ namespace bangazonCLI.Test
             _manager = new RevenueReportManager("BANGAZONTEST");
 			_testCustomer = new Customer("Sean", "Williams");
 			_customerManager = new CustomerManager("BANGAZONTEST");
-			_orderManager = new OrderManager();
+			_orderManager = new OrderManager("BANGAZONTEST");
             _productManager = new ProductManager("BANGAZONTEST");
-             _order = new Order();
+             _order = new Order("BANGAZONTEST");
         }
 
         [Fact]
@@ -47,7 +47,9 @@ namespace bangazonCLI.Test
             _product.CustomerId = _order.CustomerId;
             _product.Id =  _productManager.Add(_product);
             _product2.Id =  _product2.CustomerId = _order.CustomerId;
-            _productManager.Add(_product2);
+            _product2.Id = _productManager.Add(_product2);
+
+            _order.Id = _orderManager.AddOrder(_order);
             _order.AddProduct(_product);
             _order.AddProduct(_product);
             _order.AddProduct(_product);
@@ -95,6 +97,7 @@ namespace bangazonCLI.Test
             _product4.Id =  _product4.CustomerId = _order.CustomerId;
             _product4.Id =  _productManager.Add(_product4);
             
+            _order.Id = _orderManager.AddOrder(_order);
             _order.AddProduct(_product);
             _order.AddProduct(_product);
             _order.AddProduct(_product);
