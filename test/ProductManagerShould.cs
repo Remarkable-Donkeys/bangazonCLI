@@ -14,6 +14,7 @@ namespace bangazonCLI.Test
         DatabaseInterface db = new DatabaseInterface("BANGAZONTEST");
         ProductManager manager = new ProductManager("BANGAZONTEST");
         CustomerManager custManager = new CustomerManager("BANGAZONTEST");
+        OrderManager orderManager = new OrderManager("BANGAZONTEST");
         
         [Fact]
         public void AddProduct()
@@ -109,6 +110,7 @@ namespace bangazonCLI.Test
         public void DeleteProduct()
         {
            db.CheckDatabase();
+           Order newOrder = new Order("BANGAZONTEST");
             Customer tyler = new Customer("Tyler", "Bowman");
            int CustId = custManager.Add(tyler);
 
@@ -119,6 +121,8 @@ namespace bangazonCLI.Test
 
             int newId = manager.Add(_product);
             manager.Add(_product2);
+
+            newOrder.AddProduct(_product2);
 
             manager.Delete(newId, CustId);
 

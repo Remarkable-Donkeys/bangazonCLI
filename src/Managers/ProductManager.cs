@@ -9,9 +9,11 @@ namespace bangazonCLI
     {
 
         DatabaseInterface db;
+        OrderManager orderManager ;
         public ProductManager(string DBenvironment)
         {
             db = new DatabaseInterface(DBenvironment);
+           orderManager = new OrderManager(DBenvironment);
         }
         private int _activeCustomerId = 1;
 
@@ -35,7 +37,7 @@ namespace bangazonCLI
                 while (reader.Read())
                 {
                     Product returnedProduct = new Product();
-                    
+
                     returnedProduct.Id = reader.GetInt32(0);
                     returnedProduct.Name = reader[1].ToString();
                     returnedProduct.Description = reader[2].ToString();
@@ -47,18 +49,21 @@ namespace bangazonCLI
                     AllProducts.Add(returnedProduct);
                 }
             });
-            
+
             return AllProducts;
         }
         //method to GET a single product that matches the given productId
         public Product GetSingleProduct(int productId)
         {
+            //instantiates a new product.
             Product returnedProduct = new Product();
             string sql = $"SELECT * FROM Product WHERE Product.Id = {productId}";
+            //runs DB query
             db.Query(sql, (SqliteDataReader reader) =>
             {
                 while (reader.Read())
                 {
+                    //Takes the returned data from the database and assign it to the appropriate properties of the new Product.
                     returnedProduct.Id = reader.GetInt32(0);
                     returnedProduct.Name = reader[1].ToString();
                     returnedProduct.Description = reader[2].ToString();
@@ -69,6 +74,7 @@ namespace bangazonCLI
 
                 }
             });
+            //returns the new product.
             return returnedProduct;
         }
 
@@ -81,9 +87,37 @@ namespace bangazonCLI
 
         public void Delete(int productId, int customerId)
         {
-            string sql = $"DELETE FROM Product WHERE Id = {productId} AND CustomerId = {customerId}";
+            //Gets a list of all orders in the database
+            List<Order> allOrders = orderManager.GetOrderList();
+            //boolean indicating whether or not the given product is attached to an order.  Default is set to false.
+            bool productOrdered = false;
+            //Iterate over the list of orders
+            foreach (Order o in allOrders)
+            {
+                //for each Order in the list, store its list of ordered products.
+                List<Product> orderedProducts = o.GetProductList();
+                //Iterate over the list of ordered products
+                foreach (Product p in orderedProducts)
+                {
+                    //Conditional statement that checks to see if the Id of the ordered product matches the Id of the product to delete.
+                    if (p.Id == productId)
+                    {
+                        //if it is equal, set the boolean to true
+                        productOrdered = true;
+                    }
+                }
+            }
+            //Conditional statement that says if the product is not in an order go ahead and delete it from the database.
+            if (productOrdered == false)
+            {
+                string sql = $"DELETE FROM Product WHERE Id = {productId} AND CustomerId = {customerId}";
+                db.Update(sql);
+            } else 
+            {
+                //if it is in one or more order, write an error message to the console saying it cannot be deleted.
+                Console.WriteLine("Product has been added to an order, cannot delete.");
+            }
 
-            db.Update(sql);
         }
 
     }
