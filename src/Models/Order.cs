@@ -55,7 +55,8 @@ namespace bangazonCLI
             _db.Query($@"
                 SELECT p.Id, p.Name, p.Description, p.Price, p.CustomerId, p.Quantity, p.DateAdded 
                 FROM Product p, OrderedProduct op 
-                WHERE op.OrderId = {Id}",
+                WHERE op.OrderId = {Id}
+                AND p.Id = op.ProductId",
             (SqliteDataReader reader) =>
                     {
                         while (reader.Read())
