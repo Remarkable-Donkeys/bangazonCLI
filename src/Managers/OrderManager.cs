@@ -98,6 +98,7 @@ namespace bangazonCLI
 
 		public void RemoveAllOrders()
 		{
+			_db.Update($@"Delete from `OrderedProduct`");
 			_db.Update($@"DELETE FROM `Order`");
 		}
 
@@ -131,6 +132,7 @@ namespace bangazonCLI
 		public void RemoveOrder(int orderId)
 		{
 			// _orderList.RemoveAll(o => o.Id == orderId);
+			_db.Update($@"Delete from `OrderedProduct` where OrderId={orderId}");
 			_db.Update($@"DELETE FROM `Order` WHERE Id={orderId}");
 		}
 
