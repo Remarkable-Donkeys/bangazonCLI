@@ -10,7 +10,7 @@ namespace bangazonCLI
             private ProductManager _pManager;
             private OrderManager _oManager;
             private Order _order;
-            private List<Product> _productList;
+            private List<Product> _allProducts;
             private List<Order> _orderList;
             private List<Product> _allOrderedProducts;
             private List<Product> _staleProducts;
@@ -21,7 +21,7 @@ namespace bangazonCLI
             _oManager = new OrderManager(databaseEnvironment);
             _order = new Order(databaseEnvironment);
 
-            _productList = _pManager.GetAllProducts();
+            _allProducts = _pManager.GetAllProducts();
             //all orders in system
             _orderList = _oManager.GetOrderList();
 
@@ -48,7 +48,7 @@ namespace bangazonCLI
                         }
                 });
             }    
-            foreach(Product p in _productList)
+            foreach(Product p in _allProducts)
             {
                 // adds products that have been in the system over 180 days and never added to an order
                 if(p.DateAdded < pStaleDate && !_allOrderedProducts.Contains(p))
@@ -60,11 +60,12 @@ namespace bangazonCLI
             //requirement 2
             foreach (Order o in _orderList)
             {
+                List<Product> oProduct = o.GetProductList();
                 //if an order is incomplete and over 90 days old
                 if (o.DateOrdered == null && o.DateCreated < oStaleDate)
                 {
                     //get list of products for each stale order
-                    o.GetProductList().ForEach(p =>
+                    oProduct.ForEach(p =>
                     {
                         if (!_staleProducts.Contains(p))
                         {
@@ -79,13 +80,14 @@ namespace bangazonCLI
             //requirement 3
             foreach (Order o in _orderList)
             {
+                List<Product> oProduct = o.GetProductList();
                 //if an order has been completed
                 if (o.DateOrdered != null)
                 {
-                    o.GetProductList().ForEach(p =>
+                    oProduct.ForEach(p =>
                         {
                             //if the product was added over 180 days ago, has a quantity greater than 0 and is not already in the staleProducts list
-                            if (p.DateAdded < pStaleDate && p.Quantity > 0 && !_staleProducts.Contains(p))
+                            if (!_staleProducts.Contains(p) && p.DateAdded < pStaleDate && p.Quantity > 0)
                             {
                                 //add product to staleProducts list
                                 _staleProducts.Add(p);
@@ -104,8 +106,8 @@ namespace bangazonCLI
 
             int i = 1;
             foreach(Product p in _staleProducts){
-                Console.WriteLine(i + " " + p.Name);
-                i += i;
+                Console.WriteLine(i + ". " + p.Name);
+                i += 1;
             }
 
 

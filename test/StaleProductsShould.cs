@@ -38,7 +38,9 @@ namespace bangazonCLI.Tests
             //requirement 1
             foreach(Order o in orderList)
             {
-                o.GetProductList().ForEach(p => {
+                List<Product> oProduct = o.GetProductList();
+
+                oProduct.ForEach(p => {
                     if (!allOrderedProducts.Contains(p))
                         {
                         //add products to the stale products list
@@ -53,16 +55,21 @@ namespace bangazonCLI.Tests
                 {
                     staleProducts.Add(p);
                 }
-            }        
+            }    
+
+            Assert.Equal(2, staleProducts.Count);
+    
 
             //requirement 2
             foreach (Order o in orderList)
             {
+                List<Product> oProduct = o.GetProductList();
+
                 //if an order is incomplete and over 90 days old
                 if (o.DateOrdered == null && o.DateCreated < oStaleDate)
                 {
                     //get list of products for each stale order
-                    o.GetProductList().ForEach(p =>
+                    oProduct.ForEach(p =>
                     {
                         if (!staleProducts.Contains(p))
                         {
@@ -73,27 +80,30 @@ namespace bangazonCLI.Tests
                     });
                 }
             }
-
-            //requirement 3
-            foreach (Order o in orderList)
-            {
-                //if an order has been completed
-                if (o.DateOrdered != null)
-                {
-                    o.GetProductList().ForEach(p =>
-                        {
-                            //if the product was added over 180 days ago, has a quantity greater than 0 and is not already in the staleProducts list
-                            if (p.DateAdded < pStaleDate && p.Quantity > 0 && !staleProducts.Contains(p))
-                            {
-                                //add product to staleProducts list
-                                staleProducts.Add(p);
-                            }
-
-                        });
-                }
-            }
-
             Assert.Equal(4, staleProducts.Count);
+
+            // //requirement 3
+            // foreach (Order o in orderList)
+            // {
+            //     List<Product> oProduct = o.GetProductList();
+
+            //     //if an order has been completed
+            //     if (o.DateOrdered != null)
+            //     {
+            //         oProduct.ForEach(p =>
+            //             {
+            //                 //if the product was added over 180 days ago, has a quantity greater than 0 and is not already in the staleProducts list
+            //                 if (!staleProducts.Contains(p) && p.DateAdded < pStaleDate && p.Quantity > 0)
+            //                 {
+            //                     //add product to staleProducts list
+            //                     staleProducts.Add(p);
+            //                 }
+
+            //             });
+            //     }
+            // }
+
+            // Assert.Equal(5, staleProducts.Count);
 
         }
     }
