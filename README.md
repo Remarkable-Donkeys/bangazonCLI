@@ -1,4 +1,4 @@
-Bangazon Employees are able to complete the following actions when using the BANGAZON CLI:
+### Bangazon Employees are able to complete the following actions when using the BANGAZON CLI:
 1. Add a new customer
 2. Select a current customer as active
 3. Complete the following actions for an active customer:
@@ -12,6 +12,7 @@ Bangazon Employees are able to complete the following actions when using the BAN
 4. The user can view stale items
 5. The user can view the 3 most popular items.
 
-##System Configuration
-Setting up the environment export BANGAZONCLI="PATH/TO/DB/FILE"
-`git clone git@github.com:Remarkable-Donkeys/bangazonCLI.git`
+## System Configuration
+1. Setting up the environment export BANGAZONCLI="PATH/TO/DB/FILE"
+2. `git clone git@github.com:Remarkable-Donkeys/bangazonCLI.git`
+3. `dotnet run` to use the application
