@@ -51,7 +51,13 @@ namespace bangazonCLI
 							order.Id = reader.GetInt32(0);
 							order.CustomerId = reader.GetInt32(1);
                             order.DateCreated = reader.GetDateTime(2);
-                            order.PaymentTypeId = reader[3] == System.DBNull.Value ? null : (int?)reader[3];
+                            // order.PaymentTypeId = reader[3] == System.DBNull.Value ? null : (int?)reader[3];
+							if (!reader.IsDBNull(3))
+							{
+								order.PaymentTypeId = reader.GetInt32(3);
+							} else {
+								order.PaymentTypeId = null;
+							}
                             order.DateOrdered = reader[4] == System.DBNull.Value ? null : (DateTime?)reader.GetDateTime(4);
 
                             _orderList.Add(order);
@@ -76,7 +82,13 @@ namespace bangazonCLI
 						order.Id = reader.GetInt32(0);
 						order.CustomerId = reader.GetInt32(1);
 						order.DateCreated = reader.GetDateTime(2);
-						order.PaymentTypeId = reader[3] == System.DBNull.Value ? null : (int?)reader[3];
+						// order.PaymentTypeId = reader[3] == System.DBNull.Value ? null : (int?)reader[3];
+						if (!reader.IsDBNull(3))
+						{
+							order.PaymentTypeId = reader.GetInt32(3);
+						} else {
+							order.PaymentTypeId = null;
+						}
 						order.DateOrdered = reader[4] == System.DBNull.Value ? null : (DateTime?)reader.GetDateTime(4);
 					}
 				});

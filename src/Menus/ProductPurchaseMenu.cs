@@ -32,11 +32,11 @@ namespace bangazonCLI
                 switch (choice)
                 {
                     case 1:
-                        //add product to order
+                        ProductListMenu.DisplayMenu();
                         break;
 
                     case 2:
-                        //complete an order
+                        CloseOrderMenu.DisplayMenu();
                         break;
 
                     case 3:
