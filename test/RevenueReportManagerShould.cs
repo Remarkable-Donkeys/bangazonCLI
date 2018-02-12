@@ -43,7 +43,7 @@ namespace bangazonCLI.Test
             _order.DateCreated = DateTime.Now;
             _order.CustomerId = _customerManager.Add(_testCustomer);
             Product _product = new Product("Book", "A BOOK", 25.55, 2);
-            Product _product2 = new Product("Book", "A BOOK", 50.5, 2);
+            Product _product2 = new Product("Book2", "A BOOK", 50.5, 2);
             _product.CustomerId = _order.CustomerId;
             _product.Id =  _productManager.Add(_product);
             _product2.Id =  _product2.CustomerId = _order.CustomerId;
@@ -54,18 +54,19 @@ namespace bangazonCLI.Test
             _order.AddProduct(_product);
             _order.AddProduct(_product2);
 
-            Dictionary<string,(double, double)> productDictionay = _manager.GetProductsDictionary(_order);
+            Dictionary<string,(int, double)> productDictionay = _manager.GetProductsDictionary(_order);
             double res = 0.0;
 
-            foreach (KeyValuePair<string, (double, double)> item in productDictionay)
+            foreach (KeyValuePair<string, (int, double)> item in productDictionay)
             {
-                res += item.Value;
+                res += productDictionay[item.Key].Item2;
             }
             // res/2 because res = the price of all products + the total price
             // so res/2 = total price
             Assert.Equal(152.7, res/2);
-            Assert.Equal(152.7, productDictionay["Total"]);
-            Assert.Equal(102.2, productDictionay[_product.Id.ToString()]);
+            Assert.Equal(152.7, productDictionay["Total"].Item2);
+            Assert.Equal(5, productDictionay["Total"].Item1);
+            Assert.Equal(102.2, productDictionay[_product.Id.ToString()].Item2);
         }
 
         [Fact]
@@ -116,20 +117,20 @@ namespace bangazonCLI.Test
 
             Dictionary<string, (int, int, double)> popularItems = _manager.GetPopularItems(orderList);
 
-            Assert.Equal(6, popularItems["Book"].Item1);
-            Assert.Equal(1, popularItems["Book"].Item2);
-            Assert.Equal(613.2, popularItems["Book"].Item3);
+            Assert.Equal(6, popularItems[_product.Id.ToString()].Item1);
+            Assert.Equal(1, popularItems[_product.Id.ToString()].Item2);
+            Assert.Equal(613.2, popularItems[_product.Id.ToString()].Item3);
 
-            Assert.Equal(6, popularItems["Book2"].Item1);
-            Assert.Equal(1, popularItems["Book2"].Item2);
-            Assert.Equal(606, popularItems["Book2"].Item3);
+            Assert.Equal(6, popularItems[_product2.Id.ToString()].Item1);
+            Assert.Equal(1, popularItems[_product2.Id.ToString()].Item2);
+            Assert.Equal(606, popularItems[_product2.Id.ToString()].Item3);
 
-            Assert.Equal(6, popularItems["Book3"].Item1);
-            Assert.Equal(1, popularItems["Book3"].Item2);
-            Assert.Equal(909, popularItems["Book3"].Item3);
+            Assert.Equal(6, popularItems[_product3.Id.ToString()].Item1);
+            Assert.Equal(1, popularItems[_product3.Id.ToString()].Item2);
+            Assert.Equal(909, popularItems[_product3.Id.ToString()].Item3);
 
-            Assert.Equal(6, popularItems["Total"].Item1);
-            Assert.Equal(1, popularItems["Total"].Item2);
+            Assert.Equal(18, popularItems["Total"].Item1);
+            Assert.Equal(3, popularItems["Total"].Item2);
             Assert.Equal(2128.2, popularItems["Total"].Item3);
 
         }
