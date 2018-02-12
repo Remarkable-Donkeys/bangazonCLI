@@ -19,6 +19,8 @@ namespace bangazonCLI
             _paymentList = new List<PaymentType>();
             db = new DatabaseInterface(dbInterface);
 
+            db.CheckDatabase();
+
             //This query gets all payment type information from the database
             // and pushes the result into a list of payment types
             db.Query($@"
@@ -64,10 +66,11 @@ namespace bangazonCLI
         }
 
         //Adds a payment type to the database
-        public void AddPaymentType(PaymentType payment)
+        public int AddPaymentType(PaymentType payment)
         {
             _paymentList.Add(payment);
-		    db.Insert($@"
+            
+		    return db.Insert($@"
             INSERT INTO PaymentType
             (Id, CustomerId, Type, AccountNumber)
             VALUES

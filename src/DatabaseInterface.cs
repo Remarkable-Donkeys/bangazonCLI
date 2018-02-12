@@ -209,8 +209,8 @@ namespace bangazonCLI
                             `Id` integer NOT NULL PRIMARY KEY AUTOINCREMENT,
                             `CustomerId` int NOT NULL,
                             `DateCreated` string NOT NULL,
-                            `PaymentTypeId` int NOT NULL,
-                            `DateOrdered` string NOT NULL,
+                            `PaymentTypeId` int,
+                            `DateOrdered` string,
                             FOREIGN KEY(`CustomerId`) REFERENCES `Customer`(`Id`),
                             FOREIGN KEY(`PaymentTypeId`) REFERENCES `PaymentType`(`Id`) 
                         )";

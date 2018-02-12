@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace bangazonCLI.Tests
@@ -15,112 +16,30 @@ namespace bangazonCLI.Tests
 
 		// OrderManager is to manage all existing orders in the db
         private OrderManager _orderManager;
+        private CustomerManager _customerManager;
 		private int _activeCustomerId;
+        private string DBenvironment = "BANGAZONTEST";
+        private DatabaseInterface _db;
+
 
         /***************/
         /* Constructor */
         /***************/
 		public OrderManagerShould()
 		{
+            _db = new DatabaseInterface(DBenvironment);
 			_activeCustomerId = 1;
 			_product = new Product("Book", "A book", 25.55, 2);
             _product.CustomerId = _activeCustomerId;
 
-			_order = new Order();
+			_order = new Order(DBenvironment);
 
-            // order properties
-            _order.Id = 1;
             _order.CustomerId = _activeCustomerId;
             _order.DateCreated = DateTime.Now;
 
-			_orderManager = new OrderManager();
+			_orderManager = new OrderManager(DBenvironment);
+            _customerManager = new CustomerManager(DBenvironment);
 		}
-
-        /***********************/
-        /* Order Class Methods */
-        /***********************/
-
-        // Add product to order
-        [Fact]
-        public void AddProductToOrder()
-        {
-			_order.AddProduct(_product);
-
-            List<Product> orderProductList = _order.GetProductList();
-            
-            Assert.Contains(_product, orderProductList);
-        }
-
-        // List all products in an order
-        [Fact]
-        public void ListProductsInOrder()
-        {
-            if(_order.GetProductList().Count < 1)
-            {
-                _order.AddProduct(_product);
-            }
-
-            List<Product> orderProductList = _order.GetProductList();
-            
-            Assert.Contains(_product, orderProductList);
-        }
-
-        // Remove all products from order
-        [Fact]
-        public void RemoveAllProductsFromOrder()
-        {
-            if(_order.GetProductList().Count < 1)
-            {
-                _order.AddProduct(_product);
-            }
-
-            List<Product> orderProductList = _order.GetProductList();
-            
-            Assert.Contains(_product, orderProductList);
-
-            _order.RemoveAllProducts();
-
-            Boolean isProductCountGreaterThanZero = _order.GetProductList().Count > 0;
-
-            Assert.False(isProductCountGreaterThanZero);
-        }
-
-        // Is product in order, based on product id
-        [Fact]
-        public void IsProductInOrder()
-        {
-            if(_order.GetProductList().Count > 0)
-            {
-                _order.RemoveAllProducts();
-            }
-
-            List<Product> orderProductList = _order.GetProductList();
-
-            Boolean isProductInOrder = _order.IsProductInOrder(_product);
-
-            Assert.False(isProductInOrder);
-
-            _order.AddProduct(_product);
-
-            isProductInOrder = _order.IsProductInOrder(_product);
-
-            Assert.True(isProductInOrder);
-        }
-
-        // Get single product from order
-        [Fact]
-        public void GetSingleProductFromOrder()
-        {
-            if(_order.GetProductList().Count < 1)
-            {
-                _order.AddProduct(_product);
-            }
-            int productId = _product.Id;
-
-            Product product = _order.GetProduct(productId);
-
-            Assert.Equal(product, _product);
-        }
 
         /*******************************/
         /* Order Manager Class Methods */
@@ -130,127 +49,233 @@ namespace bangazonCLI.Tests
         [Fact]
         public void AddToOrderManager()
         {
-            _orderManager.AddOrder(_order);
+            _db.CheckDatabase();
+            Customer bob = new Customer(){
+                FirstName = "Bob",
+                LastName = "Jones",
+                Address = "200 Jackson Lane",
+                City= "Nashville",
+                State= "TN",
+                PostalCode= "12345",
+                Phone="123-123-1234",
+                DateCreated= DateTime.Now,
+                LastActive=DateTime.Now
+            };
+
+			_order.CustomerId = _customerManager.Add(bob);
+
+            int orderId = _orderManager.AddOrder(_order);
 
             List<Order> orderList = _orderManager.GetOrderList();
 
-            Boolean isOrderInOrderManager = orderList.Contains(_order);
+            Boolean isOrderInOrderManager = orderId == _orderManager.GetSingleOrder(orderId).Id;
 
             Assert.True(isOrderInOrderManager);
+
+            _db.Update($"DELETE FROM `Order` WHERE Id={orderId}");
+
+			_db.Update($"DELETE FROM `Customer` WHERE Id={_order.CustomerId}");
         }
 
         // Remove order from order manager
         [Fact]
         public void RemoveOrderFromOrderManager()
         {
-            int orderId = _order.Id;
-            if(_orderManager.GetOrderList().Count > 0)
-            {
-                _orderManager.RemoveAllOrders();
-            }
+            _db.CheckDatabase();
+            Customer bob = new Customer(){
+                FirstName = "Bob",
+                LastName = "Jones",
+                Address = "200 Jackson Lane",
+                City= "Nashville",
+                State= "TN",
+                PostalCode= "12345",
+                Phone="123-123-1234",
+                DateCreated= DateTime.Now,
+                LastActive=DateTime.Now
+            };
 
-            _orderManager.AddOrder(_order);
+            _order.CustomerId = _customerManager.Add(bob);
 
-            Boolean orderInOrderManager = _orderManager.GetOrderList().Contains(_order);
+            int orderId = _orderManager.AddOrder(_order);
+
+            Boolean orderInOrderManager = orderId == _orderManager.GetSingleOrder(orderId).Id;
 
             Assert.True(orderInOrderManager);
 
             _orderManager.RemoveOrder(orderId);
 
-            orderInOrderManager = _orderManager.GetOrderList().Contains(_order);
+            orderInOrderManager = orderId == _orderManager.GetSingleOrder(orderId).Id;
 
             Assert.False(orderInOrderManager);
+
+            _db.Update($"DELETE FROM `Order` WHERE Id={orderId}");
+
+            _db.Update($"DELETE FROM `Customer` WHERE Id={_order.CustomerId}");
         }
 
         // Return list of all orders tracked by order manager
         [Fact]
         public void ListOrdersInOrderManager()
         {
-            if(_orderManager.GetOrderList().Count < 1)
-            {
-                _orderManager.AddOrder(_order);
-            }
+            _db.CheckDatabase();
+            Customer bob = new Customer(){
+                FirstName = "Bob",
+                LastName = "Jones",
+                Address = "200 Jackson Lane",
+                City= "Nashville",
+                State= "TN",
+                PostalCode= "12345",
+                Phone="123-123-1234",
+                DateCreated= DateTime.Now,
+                LastActive=DateTime.Now
+            };
+
+            _order.CustomerId = _customerManager.Add(bob);
+
+            int orderId = _orderManager.AddOrder(_order);
 
             List<Order> orderList = _orderManager.GetOrderList();
 
-            Assert.Contains(_order, orderList);
+            Assert.True(orderList.Count > 0);
 
+            _db.Update($"DELETE FROM `Order` WHERE Id={orderId}");
+
+            _db.Update($"DELETE FROM `Customer` WHERE Id={_order.CustomerId}");
         }
 
         // Removes all orders from order manager
         [Fact]
         public void RemoveAllOrdersFromOrderManager()
         {
-            if(_orderManager.GetOrderList().Count > 0)
-            {
-                _orderManager.RemoveAllOrders();
-            }
-            
+            _db.CheckDatabase();
+            Customer bob = new Customer(){
+                FirstName = "Bob",
+                LastName = "Jones",
+                Address = "200 Jackson Lane",
+                City= "Nashville",
+                State= "TN",
+                PostalCode= "12345",
+                Phone="123-123-1234",
+                DateCreated= DateTime.Now,
+                LastActive=DateTime.Now
+            };
+
+            _order.CustomerId = _customerManager.Add(bob);
+
+            int orderId = _orderManager.AddOrder(_order);
+
             List<Order> orderList = _orderManager.GetOrderList();
 
-            Boolean orderInOrderManager = orderList.Contains(_order);
+            Assert.True(orderList.Count > 0);
 
-            Assert.False(orderInOrderManager);
+            _orderManager.RemoveAllOrders();
+
+            orderList = _orderManager.GetOrderList();
+
+            Assert.Equal(0, orderList.Count);
+
+            _db.Update($"DELETE FROM `Customer` WHERE Id={_order.CustomerId}");
         }
 
         // Is order in order manager, based on order id
         [Fact]
-        public void IsOrderInOrderManager()
+        public void IsOrderInDatabase()
         {
-            if(_orderManager.GetOrderList().Count > 0)
-            {
-                _orderManager.RemoveAllOrders();
-            }
-            Boolean isOrderInOrderManager = _orderManager.IsOrderInOrderManager(_order);
+            _db.CheckDatabase();
+            Customer bob = new Customer(){
+                FirstName = "Bob",
+                LastName = "Jones",
+                Address = "200 Jackson Lane",
+                City= "Nashville",
+                State= "TN",
+                PostalCode= "12345",
+                Phone="123-123-1234",
+                DateCreated= DateTime.Now,
+                LastActive=DateTime.Now
+            };
 
-            Assert.False(isOrderInOrderManager);
+            _order.CustomerId = _customerManager.Add(bob);
 
-            _orderManager.AddOrder(_order);
+            int orderId = _orderManager.AddOrder(_order);
 
-            isOrderInOrderManager = _orderManager.IsOrderInOrderManager(_order);
+            Boolean isOrderInOrderManager = _orderManager.IsOrderInDatabase(orderId);
 
             Assert.True(isOrderInOrderManager);
+
+            _db.Update($"DELETE FROM `Order` WHERE Id={orderId}");
+
+            _db.Update($"DELETE FROM `Customer` WHERE Id={_order.CustomerId}");
         }
 
         // get single order from order manager
         [Fact]
         public void GetSingleOrderFromOrderManager()
         {
-            int orderId = _order.Id;
+            _db.CheckDatabase();
+            Customer bob = new Customer(){
+                FirstName = "Bob",
+                LastName = "Jones",
+                Address = "200 Jackson Lane",
+                City= "Nashville",
+                State= "TN",
+                PostalCode= "12345",
+                Phone="123-123-1234",
+                DateCreated= DateTime.Now,
+                LastActive=DateTime.Now
+            };
 
-            if(_orderManager.GetOrderList().Count > 0)
-            {
-                _orderManager.RemoveAllOrders();
-            }
-            
-            _orderManager.AddOrder(_order);
+            _order.CustomerId = _customerManager.Add(bob);
+
+            int orderId = _orderManager.AddOrder(_order);
             
             Order order = _orderManager.GetSingleOrder(orderId);
 
-            Assert.Equal(order, _order);
+            Assert.Equal(order.Id, orderId);
+            Assert.Equal(order.CustomerId, _order.CustomerId);
+
+            _db.Update($"DELETE FROM `Order` WHERE Id={orderId}");
+
+            _db.Update($"DELETE FROM `Customer` WHERE Id={_order.CustomerId}");
         }
 
         [Fact]
         public void CompleteOrder()
         {
-            int _paymentId = 1;
-            int orderId = _order.Id;
+            _db.CheckDatabase();
+            Customer bob = new Customer(){
+                FirstName = "Bob",
+                LastName = "Jones",
+                Address = "200 Jackson Lane",
+                City= "Nashville",
+                State= "TN",
+                PostalCode= "12345",
+                Phone="123-123-1234",
+                DateCreated= DateTime.Now,
+                LastActive=DateTime.Now
+            };
 
-            if(_orderManager.GetOrderList().Count > 0)
-            {
-                _orderManager.RemoveAllOrders();
-            }
+            _order.CustomerId = _customerManager.Add(bob);
+
+            PaymentType _paymentType = new PaymentType(_order.CustomerId, "VISA", "1234567");
+
+            PaymentTypeManager _paymentTypeManager = new PaymentTypeManager(DBenvironment);
             
-            _orderManager.AddOrder(_order);
+            int paymentId = _paymentTypeManager.AddPaymentType(_paymentType);
+            
+            int orderId = _orderManager.AddOrder(_order);
 
-            // to complete order a paymentId should be passed
-            _orderManager.CompleteOrder(orderId, _paymentId);
+            _orderManager.CompleteOrder(orderId, paymentId);
 
             Order order = _orderManager.GetSingleOrder(orderId);
 
-            Boolean validOrderDate = order.DateOrdered > order.DateCreated;
+            Boolean paymentIdMatch = order.PaymentTypeId == paymentId;
             
-            Assert.True(validOrderDate);
+            Assert.NotNull(order.DateOrdered);
+            Assert.True(paymentIdMatch);
+
+            _db.Update($"DELETE FROM `Order` WHERE Id={orderId}");
+            _db.Update($"DELETE FROM `PaymentType` WHERE Id={paymentId}");
+            _db.Update($"DELETE FROM `Customer` WHERE Id={_order.CustomerId}");
         }
     }
 }
