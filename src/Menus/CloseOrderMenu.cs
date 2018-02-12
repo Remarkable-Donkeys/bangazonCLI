@@ -29,24 +29,32 @@ namespace bangazonCLI
 			List<PaymentType> paymentTypeList = paymentTypeManager.GetPaymentTypesList(activeCustomerId);
 			paymentTypeList.ForEach(paymentType => paymentTypeDict.Add(++paymentTypeDictId, paymentType));
 			
-			do {
-				Console.Clear();
-				Console.WriteLine("Choose a Payment Option");
-				Console.WriteLine("**********************");
-				
-				foreach(KeyValuePair<int, PaymentType> paymentTypeKvp in paymentTypeDict)
-				{
-					Console.WriteLine($"{paymentTypeKvp.Key}. {paymentTypeKvp.Value.Type}");
-				}
+			if(paymentTypeList.Count > 0)
+			{
+				do {
+					Console.Clear();
+					Console.WriteLine("Choose a Payment Option");
+					Console.WriteLine("**********************");
+					
+					foreach(KeyValuePair<int, PaymentType> paymentTypeKvp in paymentTypeDict)
+					{
+						Console.WriteLine($"{paymentTypeKvp.Key}. {paymentTypeKvp.Value.Type}");
+					}
 
-				Console.Write("> ");
-				userChoice = Int32.Parse(Console.ReadLine());
+					Console.Write("> ");
+					userChoice = Int32.Parse(Console.ReadLine());
 
-				if(paymentTypeDict.ContainsKey(userChoice))
-				{
-					orderManager.CompleteOrder(targetOrder.Id, paymentTypeDict[userChoice].Id);
-				}
-			} while(userChoice != paymentTypeDictId);
+					if(paymentTypeDict.ContainsKey(userChoice))
+					{
+						orderManager.CompleteOrder(targetOrder.Id, paymentTypeDict[userChoice].Id);
+					}
+				} while(userChoice != paymentTypeDictId);
+			}
+			else
+			{
+				Console.WriteLine("Please register a valid Payment Type, press any key go go back to the previous menu");
+				Console.ReadKey();				
+			}
         }
 
         public static void DisplayMenu()
