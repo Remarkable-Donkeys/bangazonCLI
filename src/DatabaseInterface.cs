@@ -113,7 +113,7 @@ namespace bangazonCLI
                     Console.WriteLine(ex.Message);
                     if (ex.Message.Contains("no such table"))
                     {
-                        dbcmd.CommandText = $@"CREATE TABLE `Customer` (
+                        dbcmd.CommandText = $@"CREATE TABLE IF NOT EXISTS `Customer` (
                             `Id`	integer NOT NULL PRIMARY KEY AUTOINCREMENT,
                             `FirstName`	varchar(80) NOT NULL, 
                             `LastName`	varchar(80) NOT NULL, 
@@ -160,34 +160,6 @@ namespace bangazonCLI
                         dbcmd.Dispose();
                     }
                 }
-                // Query the OrderedProduct table to see if table is created
-                dbcmd.CommandText = $"select `Id` from `OrderedProduct`";
-
-                try
-                {
-                    // Try to run the query. If it throws an exception, create the table
-                    using (SqliteDataReader reader = dbcmd.ExecuteReader())
-                    {
-
-                    }
-                    dbcmd.Dispose();
-                }
-                catch (Microsoft.Data.Sqlite.SqliteException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    if (ex.Message.Contains("no such table"))
-                    {
-                        dbcmd.CommandText = $@"CREATE TABLE `OrderedProduct` (
-                            `Id` integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-                            `ProductId` int NOT NULL,
-                            `OrderId` int NOT NULL,
-                            FOREIGN KEY(`ProductId`) REFERENCES `Product`(`Id`),
-                            FOREIGN KEY(`OrderId`) REFERENCES `Order`(`Id`) 
-                        )";
-                        dbcmd.ExecuteNonQuery();
-                        dbcmd.Dispose();
-                    }
-                }
                 // Query the Order table to see if table is created
                 dbcmd.CommandText = $"select `Id` from `Order`";
 
@@ -218,6 +190,35 @@ namespace bangazonCLI
                         dbcmd.Dispose();
                     }
                 }
+                // Query the OrderedProduct table to see if table is created
+                dbcmd.CommandText = $"select `Id` from `OrderedProduct`";
+
+                try
+                {
+                    // Try to run the query. If it throws an exception, create the table
+                    using (SqliteDataReader reader = dbcmd.ExecuteReader())
+                    {
+
+                    }
+                    dbcmd.Dispose();
+                }
+                catch (Microsoft.Data.Sqlite.SqliteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    if (ex.Message.Contains("no such table"))
+                    {
+                        dbcmd.CommandText = $@"CREATE TABLE `OrderedProduct` (
+                            `Id` integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+                            `ProductId` int NOT NULL,
+                            `OrderId` int NOT NULL,
+                            FOREIGN KEY(`ProductId`) REFERENCES `Product`(`Id`),
+                            FOREIGN KEY(`OrderId`) REFERENCES `Order`(`Id`) 
+                        )";
+                        dbcmd.ExecuteNonQuery();
+                        dbcmd.Dispose();
+                    }
+                }
+                
                 // Query the PaymentType table to see if table is created
                 dbcmd.CommandText = $"select `Id` from `PaymentType`";
 

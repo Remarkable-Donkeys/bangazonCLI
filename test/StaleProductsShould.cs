@@ -9,121 +9,92 @@ namespace bangazonCLI.Tests
     public class StaleProductsShould
     {
         private DatabaseInterface _db = new DatabaseInterface("BANGAZONCLI");
-        private ProductManager _pManager = new ProductManager("BANGAZONTEST");
-        private CustomerManager _cManager = new CustomerManager("BANGAZONTEST");
+        private ProductManager _pManager = new ProductManager("BANGAZONCLI");
+        private OrderManager _oManager = new OrderManager("BANGAZONCLI");
+        private Order _order = new Order("BANGAZONCLI");
 
-        Customer bob = new Customer()
-        {
-            FirstName = "Bob",
-            LastName = "Jones",
-            Address = "200 Jackson Lane",
-            City = "Nashville",
-            State = "TN",
-            PostalCode = "12345",
-            Phone = "123-123-1234",
-            DateCreated = DateTime.Now,
-            LastActive = DateTime.Now
-        };
-
-
-        [Fact]
-        public void OldProducts()
-        {
-            int cId = _cManager.Add(bob);
-
-            Product _p1 = new Product()
-            {
-                Name = "Book",
-                Description = "this is a book",
-                Price = 10.99,
-                Quantity = 3,
-                DateAdded = DateTime.Now.AddDays(-300),
-                CustomerId = cId
-            };
-            Product _p2 = new Product()
-            {
-                Name = "Bat",
-                Description = "this is a Bat",
-                Price = 10.99,
-                Quantity = 3,
-                DateAdded = DateTime.Now,
-                CustomerId = cId
-            };
-            Product _p3 = new Product()
-            {
-                Name = "Movie",
-                Description = "this is a Movie",
-                Price = 1.99,
-                Quantity = 3,
-                DateAdded = DateTime.Now.AddDays(-100),
-                CustomerId = cId
-            };
-
-            _pManager.Add(_p1);
-            _pManager.Add(_p2);
-            _pManager.Add(_p3);
-            //products that have been in the system more than 180 days
-            List<Product> productList = _pManager.GetAllProducts();
-
-            DateTime staleDate = DateTime.Now.AddDays(-180);
-
-            List<Product> staleProduct = new List<Product>();
-
-            foreach (Product p in productList)
-            {
-                //covert string to datetime
-                DateTime pDate = Convert.ToDateTime(p.DateAdded);
-                if (pDate < staleDate)
-                {
-                    staleProduct.Add(p);
-                }
-            }
-
-            Assert.Equal(1, staleProduct.Count);
-
-        }
 
         [Fact]
         public void OldOrders()
         {
-            ICollection all;
+            _db.CheckDatabase();
+            //all products in system
+            List<Product> productList = _pManager.GetAllProducts();
+            //all orders in system
+            List<Order> orderList = _oManager.GetOrderList();
+
+            //all ordered products
+            List<Product> allOrderedProducts = new List<Product>();
+            //stale products list
             List<Product> staleProducts = new List<Product>();
 
-            _db.Query($@"SELECT p.Name AS 'Product', p.DateAdded, p.Quantity, op.OrderId, o.DateCreated, o.DateOrdered
-            FROM Product p
-            LEFT JOIN OrderedProduct op
-            ON p.Id = op.ProductId
-            LEFT JOIN `Order` o
-            ON op.OrderId = o.Id",
-            (SqliteDataReader reader) =>
-                    {
-                        while (reader.Read())
+            //product stale date
+            DateTime pStaleDate = DateTime.Now.AddDays(-180);
+            //order stale date
+            DateTime oStaleDate = DateTime.Now.AddDays(-90);
+
+
+
+            //requirement 1
+            foreach(Order o in orderList)
+            {
+                o.GetProductList().ForEach(p => {
+                    if (!allOrderedProducts.Contains(p))
                         {
-                            Customer customer = new Customer();
-                            customer.Id = reader.GetInt32(0);
-
-                            all.Add()
-
+                        //add products to the stale products list
+                            allOrderedProducts.Add(p);
                         }
-                    }
-                    );
+                });
+            }    
+            foreach(Product p in productList)
+            {
+                // adds products that have been in the system over 180 days and never added to an order
+                if(p.DateAdded < pStaleDate && !allOrderedProducts.Contains(p))
+                {
+                    staleProducts.Add(p);
+                }
+            }        
 
+            //requirement 2
+            foreach (Order o in orderList)
+            {
+                //if an order is incomplete and over 90 days old
+                if (o.DateOrdered == null && o.DateCreated < oStaleDate)
+                {
+                    //get list of products for each stale order
+                    o.GetProductList().ForEach(p =>
+                    {
+                        if (!staleProducts.Contains(p))
+                        {
+                        //add products to the stale products list
+                            staleProducts.Add(p);
+                        }
 
-            //product in system 180days
+                    });
+                }
+            }
 
-            //never added to order or added to order with remaining quantity
+            //requirement 3
+            foreach (Order o in orderList)
+            {
+                //if an order has been completed
+                if (o.DateOrdered != null)
+                {
+                    o.GetProductList().ForEach(p =>
+                        {
+                            //if the product was added over 180 days ago, has a quantity greater than 0 and is not already in the staleProducts list
+                            if (p.DateAdded < pStaleDate && p.Quantity > 0 && !staleProducts.Contains(p))
+                            {
+                                //add product to staleProducts list
+                                staleProducts.Add(p);
+                            }
 
-            //added to order that wasn't completed
-            //order created over 90days ago
+                        });
+                }
+            }
 
-            /*
-            SELECT p.Name AS 'Product', p.DateAdded, p.Quantity, op.OrderId, o.DateCreated, o.DateOrdered
-            FROM Product p
-            LEFT JOIN OrderedProduct op
-            ON p.Id = op.ProductId
-            LEFT JOIN `Order` o
-            ON op.OrderId = o.Id
-            */
+            Assert.Equal(4, staleProducts.Count);
+
         }
     }
 }
