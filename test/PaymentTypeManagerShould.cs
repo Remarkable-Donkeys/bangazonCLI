@@ -35,7 +35,7 @@ namespace bangazonCLI.Test
         [Fact]
         public void AddPaymentType()
         {
-			_db.NukeDB();
+			// _db.NukeDB();
 			_db.CheckDatabase();
 			_payment.CustomerId=_customerManager.Add(_testCustomer);
 			List<PaymentType> paymentList = new List<PaymentType>();
