@@ -41,5 +41,14 @@ namespace bangazonCLI
 
             return resDictionary;
         }
+
+        public Dictionary<string, (int, int, double)> GetPopularItems(List<Order> orders)
+        {
+            Dictionary<string, (int, int, double)> res = new Dictionary<string, (int, int, double)>();
+
+            
+
+            return res;
+        }
     }
 }

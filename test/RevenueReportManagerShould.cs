@@ -29,7 +29,7 @@ namespace bangazonCLI.Test
             _manager = new RevenueReportManager("BANGAZONTEST");
 			_testCustomer = new Customer("Sean", "Williams");
 			_customerManager = new CustomerManager("BANGAZONTEST");
-			_customerManager = new OrderManager("BANGAZONTEST");
+			_orderManager = new OrderManager();
             _productManager = new ProductManager("BANGAZONTEST");
              _order = new Order();
         }
@@ -54,10 +54,10 @@ namespace bangazonCLI.Test
             _order.AddProduct(_product);
             _order.AddProduct(_product2);
 
-            Dictionary<string,double> productDictionay = _manager.GetProductsDictionary(_order);
+            Dictionary<string,(double, double)> productDictionay = _manager.GetProductsDictionary(_order);
             double res = 0.0;
 
-            foreach (KeyValuePair<string, double> item in productDictionay)
+            foreach (KeyValuePair<string, (double, double)> item in productDictionay)
             {
                 res += item.Value;
             }
@@ -114,9 +114,23 @@ namespace bangazonCLI.Test
 
             List<Order> orderList = _orderManager.GetOrderList();
 
-            Dictionary<string, double> popularItems = _manager.GetPopularItems(orderList);
+            Dictionary<string, (int, int, double)> popularItems = _manager.GetPopularItems(orderList);
 
-            Assert.Equal()
+            Assert.Equal(6, popularItems["Book"].Item1);
+            Assert.Equal(1, popularItems["Book"].Item2);
+            Assert.Equal(613.2, popularItems["Book"].Item3);
+
+            Assert.Equal(6, popularItems["Book2"].Item1);
+            Assert.Equal(1, popularItems["Book2"].Item2);
+            Assert.Equal(606, popularItems["Book2"].Item3);
+
+            Assert.Equal(6, popularItems["Book3"].Item1);
+            Assert.Equal(1, popularItems["Book3"].Item2);
+            Assert.Equal(909, popularItems["Book3"].Item3);
+
+            Assert.Equal(6, popularItems["Total"].Item1);
+            Assert.Equal(1, popularItems["Total"].Item2);
+            Assert.Equal(2128.2, popularItems["Total"].Item3);
 
         }
     }
