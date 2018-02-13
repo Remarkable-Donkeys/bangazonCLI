@@ -19,6 +19,8 @@ namespace bangazonCLI
             _paymentList = new List<PaymentType>();
             db = new DatabaseInterface(dbInterface);
 
+            db.CheckDatabase();
+
             //This query gets all payment type information from the database
             // and pushes the result into a list of payment types
             db.Query($@"
