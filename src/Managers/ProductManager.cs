@@ -1,3 +1,12 @@
+/*author:   Tyler Bowman
+purpose:    Handle database interactions with Products
+methods:    Add Product
+            Get All Products
+            Get Single Product
+            Update Product
+            Delete Product
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

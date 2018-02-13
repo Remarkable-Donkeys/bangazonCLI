@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace bangazonCLI
 {
-    public static class RevenueReportInterface
+    public class RevenueReportInterface
     {   
-        public static void Display()
+        public static string Display()
         {
             CustomerManager customerManager = new CustomerManager("BANGAZONCLI");
             List<Customer> allCustomers = customerManager.GetAllCustomers();
@@ -32,10 +32,16 @@ namespace bangazonCLI
                 Console.WriteLine(new string('-', 55));
                 string output = string.Format("{0, -20} {1, -15} {2, -15}", "Total", orderRevenue["Total"].Item1, orderRevenue["Total"].Item2);
                 Console.WriteLine(output);
+                Console.WriteLine();
 
             }
 
             Console.WriteLine($"Total Revenue: ${grandTotal}");
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to return to the Main Menu");
+            return Console.ReadKey().ToString();;
+
 
         }
     }
