@@ -1,3 +1,12 @@
+/*author:   Tyler Bowman
+purpose:    Product Unit Tests
+Tests:    	Add Product
+            Update Product
+            Delete Product 
+            Get Product List
+            Get Single Product
+ */
+
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -113,14 +122,17 @@ namespace bangazonCLI.Test
            Order newOrder = new Order("BANGAZONTEST");
             Customer tyler = new Customer("Tyler", "Bowman");
            int CustId = custManager.Add(tyler);
-
+            newOrder.CustomerId = CustId;
+           int orderId = orderManager.AddOrder(newOrder);
+           newOrder.Id = orderId;
             Product _product = new Product("Jeans", "A pair of js", 45.32, 1);
             _product.CustomerId = CustId;
             Product _product2 = new Product("Necklace", "A necklace", 58.23, 1);
             _product2.CustomerId = CustId;
 
             int newId = manager.Add(_product);
-            manager.Add(_product2);
+            int idTwo = manager.Add(_product2);
+            _product2.Id = idTwo;
 
             newOrder.AddProduct(_product2);
 
