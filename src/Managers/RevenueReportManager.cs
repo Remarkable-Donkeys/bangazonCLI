@@ -62,6 +62,50 @@ namespace bangazonCLI
 			return resDictionary;
 		}
 
+		// Consumes an order and returns a dictionary with the product Id, the total units of each
+		// product, and the total revenue of each product.  Also contains total items sold and total
+		// revenue for the order under key "Total".  ONLY CONTAINS PRODUCTS ASSIGNED TO CUSTID PARAM
+		public Dictionary<string, (int, double)> GetProductsDictionary(Order input, int custId)
+		{
+			Dictionary<string, (int, double)> resDictionary = new Dictionary<string, (int, double)>();
+			Dictionary<string, int> itemCountDictionary = new Dictionary<string, int>();
+			Dictionary<string, double> itemPriceDictionary = new Dictionary<string, double>();
+			List<Product> productList = input.GetProductList();
+			double total = 0;
+			int allProducts = 0;
+
+			foreach (Product item in productList)
+			{
+				if (item.CustomerId != custId)
+				{
+					continue;
+				}
+				if (itemCountDictionary.ContainsKey(item.Id.ToString()))
+				{
+					itemCountDictionary[item.Id.ToString()] += 1;
+					itemPriceDictionary[item.Id.ToString()] += item.Price;
+					total += item.Price;
+					allProducts += 1;
+				}
+				else
+				{
+					itemCountDictionary.Add(item.Id.ToString(), 1);
+					itemPriceDictionary.Add(item.Id.ToString(), item.Price);
+					total += item.Price;
+					allProducts += 1;
+				}
+			}
+
+			foreach (KeyValuePair<string, int> product in itemCountDictionary)
+			{
+				resDictionary.Add(product.Key, (itemCountDictionary[product.Key], itemPriceDictionary[product.Key]));
+			}
+
+			resDictionary.Add("Total", (allProducts, total));
+
+			return resDictionary;
+		}
+
 		// Consumes a list of orders and outputs a dictionary that contains the id of the top
 		// three products sold (sorted by revenue), the number of orders containing said products,
 		// the number of unique customers who orders those products, and the total revenue of those
