@@ -1,3 +1,7 @@
+/*author:   Kristen Norris
+purpose:    Display Stale Products
+constructor: generates the correct information and the Show() method displays it
+ */
 using System;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
