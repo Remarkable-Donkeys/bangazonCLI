@@ -30,7 +30,7 @@ namespace bangazonCLI
         //method to ADD a product to the system
         public int Add(Product newProduct)
         {
-            string sql = $"insert into Product (Id, Name, Description, Price, Quantity, CustomerId, DateAdded) values (null, '{newProduct.Name}', '{newProduct.Description}', {newProduct.Price}, {newProduct.Quantity}, {newProduct.CustomerId}, '2018-01-01')";
+            string sql = $"insert into Product (Id, Name, Description, Price, Quantity, CustomerId, DateAdded) values (null, '{newProduct.Name}', '{newProduct.Description}', {newProduct.Price}, {newProduct.Quantity}, {newProduct.CustomerId}, '{newProduct.DateAdded}')";
 
             int newId = db.Insert(sql);
             return newId;
@@ -53,7 +53,7 @@ namespace bangazonCLI
                     returnedProduct.Price = reader.GetDouble(3);
                     returnedProduct.Quantity = reader.GetInt32(5);
                     returnedProduct.CustomerId = reader.GetInt32(4);
-                    returnedProduct.DateAdded = reader[6].ToString();
+                    returnedProduct.DateAdded = reader.GetDateTime(6);
 
                     AllProducts.Add(returnedProduct);
                 }
@@ -79,7 +79,7 @@ namespace bangazonCLI
                     returnedProduct.Price = reader.GetDouble(3);
                     returnedProduct.Quantity = reader.GetInt32(5);
                     returnedProduct.CustomerId = reader.GetInt32(4);
-                    returnedProduct.DateAdded = reader[6].ToString();
+                    returnedProduct.DateAdded = reader.GetDateTime(6);
 
                 }
             });

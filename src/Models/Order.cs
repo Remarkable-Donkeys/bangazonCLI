@@ -69,7 +69,7 @@ namespace bangazonCLI
                             product.Price = reader.GetDouble(3);
                             product.CustomerId = reader.GetInt32(4);
                             product.Quantity = reader.GetInt32(5);
-                            product.DateAdded = reader.GetDateTime(6).ToString();
+                            product.DateAdded = reader.GetDateTime(6);
 
                             _productList.Add(product);
                         }
@@ -93,7 +93,7 @@ namespace bangazonCLI
                         product.Price = reader.GetDouble(3);
                         product.CustomerId = reader.GetInt32(4);
                         product.Quantity = reader.GetInt32(5);
-                        product.DateAdded = reader.GetDateTime(6).ToString();
+                        product.DateAdded = reader.GetDateTime(6);
                     }
                 });
 

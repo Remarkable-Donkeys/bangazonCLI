@@ -38,6 +38,8 @@ namespace bangazonCLI
             Console.Write("> ");
             _newProduct.Quantity = Int32.Parse(Console.ReadLine());
 
+            _newProduct.DateAdded = DateTime.Now;
+
             //use the ProductManager to ADD the product to the database.
             prodManager.Add(_newProduct);
 
