@@ -64,9 +64,10 @@ namespace bangazonCLI
 			{
             	targetOrder = activeOrderForActiveUser;
 				List<double> priceList = new List<double>();
+				
 				targetOrder.GetProductList().ForEach(product => priceList.Add(product.Price));
 				double orderTotal = priceList.Sum();
-
+				
 				orderManager.GetOrderList().Where(order => order.Id == activeOrderForActiveUser.Id && order.PaymentTypeId == null).Single();
 				Console.WriteLine($"Your order total is ${orderTotal}. Ready to purchase? (Y/N)");
 				Console.WriteLine("> ");

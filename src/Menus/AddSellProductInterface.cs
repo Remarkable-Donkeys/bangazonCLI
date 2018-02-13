@@ -1,3 +1,8 @@
+/*author:   Tyler Bowman
+purpose:    Allows the user to add a product for the current customer to sell
+methods:    Creates a new Product and uses the ADD method on the product manager to add it to the database
+ */
+
 using System;
 
 namespace bangazonCLI

@@ -50,6 +50,7 @@ namespace bangazonCLI
                         break;
                     case 4:
                         //Show Revenue Report
+                        RevenueReportInterface.Display();
                         break;
                     case 5:
                         //reset ActiveCustomerId 

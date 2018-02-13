@@ -1,3 +1,8 @@
+/*author:   Tyler Bowman
+purpose:    Allows user to delete a product from the database if that product is not already in an order.
+methods:    the user selects a product from a list of their products and uses the DELETE method on the product manager to delete it, if it is not in an order already.
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

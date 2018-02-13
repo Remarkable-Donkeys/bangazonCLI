@@ -41,6 +41,8 @@ namespace bangazonCLI
                         break;
                     case 4:
                         //popular items
+                        popularProductsInteface.Display();
+                        
                         break;
                 }
             }
