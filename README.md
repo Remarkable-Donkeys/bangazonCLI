@@ -1,4 +1,4 @@
-#Bangazon CLI
+# Bangazon CLI
 The Bangazon CLI allows Bangazon Employees to access and update information in the database on behalf of the customers
 ## The following actions can be completed using the BANGAZON CLI:
 1. Add a new customer
