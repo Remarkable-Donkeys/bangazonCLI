@@ -63,21 +63,25 @@ namespace bangazonCLI.Tests
             Product _product1 = new Product("Jeans", "A pair of js", 45.32, 1);
             _product1.CustomerId = CustId1;
             _product1.DateAdded = DateTime.Now.AddDays(-200);
+            _product1.Id = _pManager.Add(_product1);
 
             //added to a completed order but still has quantity
             Product _product2 = new Product("Necklace", "A necklace", 58.23, 4);
             _product2.CustomerId = CustId1;
             _product2.DateAdded = DateTime.Now.AddDays(-220);
+            _product2.Id = _pManager.Add(_product2);
 
             //added to an incomplete order and the order was created over 90 days ago
             Product _product3 = new Product("Clothes", "These are clothes", 5.23, 4);
-            _product2.CustomerId = CustId1;
-            _product2.DateAdded = DateTime.Now.AddDays(-160);
+            _product3.CustomerId = CustId1;
+            _product3.DateAdded = DateTime.Now.AddDays(-160);
+            _product3.Id = _pManager.Add(_product3);
 
             //added to the system less than 180 days ago
             Product _product4 = new Product("Movie", "A movie", 8.00, 5);
-            _product2.CustomerId = CustId1;
-            _product2.DateAdded = DateTime.Now.AddDays(-50);
+            _product4.CustomerId = CustId1;
+            _product4.DateAdded = DateTime.Now.AddDays(-50);
+            _product4.Id = _pManager.Add(_product4);
 
             //amber's completed order
             _order1.CustomerId = CustId2; //customer id
@@ -88,8 +92,8 @@ namespace bangazonCLI.Tests
             _oManager.CompleteOrder(_order1.Id, payA); //complete order added to database
 
             //amber's incomplete order
-            _order1.CustomerId = CustId2; //customer id
-			_order1.DateCreated = DateTime.Now.AddDays(-120); //created 120 days ago
+            _order2.CustomerId = CustId2; //customer id
+			_order2.DateCreated = DateTime.Now.AddDays(-120); //created 120 days ago
             _order2.Id = _oManager.AddOrder(_order2); //add order to database
             _order2.AddProduct(_product3); //add product to order
         }
