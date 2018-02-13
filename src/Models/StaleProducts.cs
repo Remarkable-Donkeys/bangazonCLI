@@ -13,7 +13,7 @@ namespace bangazonCLI
             private List<Product> _allProducts;
             private List<Order> _orderList;
             private List<Product> _allOrderedProducts;
-            private List<Product> _staleProducts;
+            public static List<Product> StaleProductsList;
 
         public StaleProducts(string databaseEnvironment){
             _db = new DatabaseInterface(databaseEnvironment);
@@ -28,7 +28,7 @@ namespace bangazonCLI
             //all ordered products
             _allOrderedProducts = new List<Product>();
             //stale products list
-            _staleProducts = new List<Product>();
+            StaleProductsList = new List<Product>();
 
             //product stale date
             DateTime pStaleDate = DateTime.Now.AddDays(-180);
@@ -53,7 +53,7 @@ namespace bangazonCLI
                 // adds products that have been in the system over 180 days and never added to an order
                 if(p.DateAdded < pStaleDate && !_allOrderedProducts.Contains(p))
                 {
-                    _staleProducts.Add(p);
+                    StaleProductsList.Add(p);
                 }
             }        
 
@@ -67,10 +67,10 @@ namespace bangazonCLI
                     //get list of products for each stale order
                     oProduct.ForEach(p =>
                     {
-                        if (!_staleProducts.Contains(p))
+                        if (!StaleProductsList.Contains(p))
                         {
                         //add products to the stale products list
-                            _staleProducts.Add(p);
+                            StaleProductsList.Add(p);
                         }
 
                     });
@@ -78,24 +78,33 @@ namespace bangazonCLI
             }
 
             //requirement 3
-            foreach (Order o in _orderList)
+            foreach(Product p in _allProducts)
             {
-                List<Product> oProduct = o.GetProductList();
-                //if an order has been completed
-                if (o.DateOrdered != null)
+                //if the product was added over 180 days ago and still has a quantity, add to the stale products list if not already added
+                if(p.DateAdded < pStaleDate && !StaleProductsList.Contains(p) && p.Quantity > 0)
                 {
-                    oProduct.ForEach(p =>
-                        {
-                            //if the product was added over 180 days ago, has a quantity greater than 0 and is not already in the staleProducts list
-                            if (!_staleProducts.Contains(p) && p.DateAdded < pStaleDate && p.Quantity > 0)
-                            {
-                                //add product to staleProducts list
-                                _staleProducts.Add(p);
-                            }
-
-                        });
+                    StaleProductsList.Add(p);
                 }
             }
+
+            // foreach (Order o in _orderList)
+            // {
+            //     List<Product> oProduct = o.GetProductList();
+            //     //if an order has been completed
+            //     if (o.DateOrdered != null)
+            //     {
+            //         oProduct.ForEach(p =>
+            //             {
+            //                 //if the product was added over 180 days ago, has a quantity greater than 0 and is not already in the staleProducts list
+            //                 if (!StaleProductsList.Contains(p) && p.DateAdded < pStaleDate && p.Quantity > 0)
+            //                 {
+            //                     //add product to staleProducts list
+            //                     StaleProductsList.Add(p);
+            //                 }
+
+            //             });
+            //     }
+            // }
         }
 
         public void Show(){
@@ -105,7 +114,7 @@ namespace bangazonCLI
             Console.WriteLine("Stale Products");
 
             int i = 1;
-            foreach(Product p in _staleProducts){
+            foreach(Product p in StaleProductsList){
                 Console.WriteLine(i + ". " + p.Name);
                 i += 1;
             }
