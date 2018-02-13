@@ -1,4 +1,9 @@
-using System;
+/*author:   Sean Williams
+purpose:    Handles the logic for finding popular products and a customer's revenue report
+methods:    GetProductsDictionary
+            GetPopularItems
+ */
+ using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -17,6 +22,9 @@ namespace bangazonCLI
 			db = new DatabaseInterface("BANGAZONCLI");
 		}
 
+		// Consumes an order and returns a dictionary with the product Id, the total units of each
+		// product, and the total revenue of each product.  Also contains total items sold and total
+		// revenue for the order under key "Total"
 		public Dictionary<string, (int, double)> GetProductsDictionary(Order input)
 		{
 			Dictionary<string, (int, double)> resDictionary = new Dictionary<string, (int, double)>();
@@ -54,6 +62,10 @@ namespace bangazonCLI
 			return resDictionary;
 		}
 
+		// Consumes a list of orders and outputs a dictionary that contains the id of the top
+		// three products sold (sorted by revenue), the number of orders containing said products,
+		// the number of unique customers who orders those products, and the total revenue of those
+		// products.  Totals of those fields are also included under the key "Total"
 		public Dictionary<string, (int, int, double)> GetPopularItems(List<Order> orders)
 		{
 			Dictionary<string, (int, int, double)> res = new Dictionary<string, (int, int, double)>();
